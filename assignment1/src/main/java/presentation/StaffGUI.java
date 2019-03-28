@@ -8,12 +8,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-public class UserGUI extends JFrame {
+public class StaffGUI extends JFrame {
 
     private DefaultTableModel model;
     private JTable table;
 
-    public UserGUI() {
+    public StaffGUI() {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(null);
         setSize(640,480);
@@ -52,45 +52,7 @@ public class UserGUI extends JFrame {
         JButton searchButton = new JButton("Search");
         searchButton.setBounds(400, 20, 80, 30);
         searchButton.addActionListener((e) -> {
-            String priceText = priceTextField.getText();
-            String name = nameTextField.getText();
-            String type = typeTextField.getText();
 
-            if (!priceText.equals("") && !name.equals("") && !type.equals("")) {
-                Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDeals(price, name, type);
-                displayTable(dealList);
-            } else if (!priceText.equals("") && !name.equals("")) {
-                Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPriceAndName(price, name);
-                displayTable(dealList);
-            } else if (!priceText.equals("") && !type.equals("")) {
-                Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPriceAndType(price, type);
-                displayTable(dealList);
-            } else if (!name.equals("") && !type.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByNameAndType(name, type);
-                displayTable(dealList);
-            } else if (!priceText.equals("")) {
-                Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPrice(price);
-                displayTable(dealList);
-            } else if (!name.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByName(name);
-                displayTable(dealList);
-            } else if (!type.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByType(type);
-                displayTable(dealList);
-            } else {
-                displayTable();
-            }
         });
         panel.add(searchButton);
 
@@ -133,17 +95,6 @@ public class UserGUI extends JFrame {
         DealService dealService = new DealServiceImpl();
 
         List<Deal> dealList = dealService.getDeals();
-        for (Deal deal : dealList) {
-            Object[] row = {deal.getPrice(), deal.getName(), deal.getType()};
-            model.addRow(row);
-        }
-    }
-
-    private void displayTable(List<Deal> dealList) {
-        String[] columns = {"Price", "Name", "Type"};
-        model = new DefaultTableModel(columns, 0);
-        table.setModel(model);
-
         for (Deal deal : dealList) {
             Object[] row = {deal.getPrice(), deal.getName(), deal.getType()};
             model.addRow(row);

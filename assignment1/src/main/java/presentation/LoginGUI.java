@@ -40,7 +40,7 @@ public class LoginGUI extends JFrame {
         errorLabel.setForeground(Color.RED);
         panel.add(errorLabel);
 
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Log in");
         loginButton.setBounds(200, 245, 70, 30);
         loginButton.addActionListener((e) -> {
             String username = usernameTextField.getText();

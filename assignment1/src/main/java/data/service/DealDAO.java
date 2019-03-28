@@ -15,4 +15,18 @@ public interface DealDAO {
     void deleteDeal(Integer dealID);
 
     List<Deal> getDeals();
+
+    List<Deal> getDealsByPrice(Double price);
+
+    List<Deal> getDealsByName(String name);
+
+    List<Deal> getDealsByType(String type);
+
+    List<Deal> getDealsByPriceAndName(Double price, String name);
+
+    List<Deal> getDealsByPriceAndType(Double price, String type);
+
+    List<Deal> getDealsByNameAndType(String name, String type);
+
+    List<Deal> getDealsByAll(Double price, String name, String type);
 }

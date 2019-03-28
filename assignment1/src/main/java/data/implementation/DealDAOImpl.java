@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.Iterator;
 import java.util.List;
@@ -130,6 +131,179 @@ public class DealDAOImpl implements DealDAO {
         try {
             tx = session.beginTransaction();
             deals = session.createQuery("FROM Deal").list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
+
+    @Override
+    public List<Deal> getDealsByPrice(Double price) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Deal WHERE price = :price");
+            query.setDouble("price", price);
+            deals = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
+
+    @Override
+    public List<Deal> getDealsByName(String name) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Deal WHERE name = :name");
+            query.setString("name", name);
+            deals = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
+
+    @Override
+    public List<Deal> getDealsByType(String type) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Deal WHERE type = :type");
+            query.setString("type", type);
+            deals = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
+
+    @Override
+    public List<Deal> getDealsByPriceAndName(Double price, String name) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Deal WHERE price = :price AND name = :name");
+            query.setDouble("price", price);
+            query.setString("name", name);
+            deals = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
+
+    @Override
+    public List<Deal> getDealsByPriceAndType(Double price, String type) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Deal WHERE price = :price AND type = :type");
+            query.setDouble("price", price);
+            query.setString("type", type);
+            deals = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
+
+    @Override
+    public List<Deal> getDealsByNameAndType(String name, String type) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Deal WHERE name = :name AND type = :type");
+            query.setString("name", name);
+            query.setString("type", type);
+            deals = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
+
+    @Override
+    public List<Deal> getDealsByAll(Double price, String name, String type) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Deal WHERE price = :price AND name = :name AND type = :type");
+            query.setDouble("price", price);
+            query.setString("name", name);
+            query.setString("type", type);
+            deals = query.list();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
