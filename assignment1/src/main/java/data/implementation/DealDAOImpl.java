@@ -29,7 +29,7 @@ public class DealDAOImpl implements DealDAO {
     }
 
     @Override
-    public Integer addDeal(Double price, String name, String type) {
+    public Integer addDeal(Double price, String name, String type, Integer quantity) {
         Session session = factory.openSession();
         Transaction tx = null;
         Integer dealID = null;
@@ -40,6 +40,7 @@ public class DealDAOImpl implements DealDAO {
             deal.setPrice(price);
             deal.setName(name);
             deal.setType(type);
+            deal.setQuantity(quantity);
             dealID = (Integer) session.save(deal);
             tx.commit();
         } catch (HibernateException e) {
@@ -80,7 +81,7 @@ public class DealDAOImpl implements DealDAO {
     }
 
     @Override
-    public void updateDeal(Integer dealID, Double price, String name, String type) {
+    public void updateDeal(Integer dealID, Double price, String name, String type, Integer quantity) {
         Session session = factory.openSession();
         Transaction tx = null;
 
@@ -90,6 +91,7 @@ public class DealDAOImpl implements DealDAO {
             deal.setPrice(price);
             deal.setName(name);
             deal.setType(type);
+            deal.setQuantity(quantity);
             session.update(deal);
             tx.commit();
         } catch (HibernateException e) {
@@ -315,5 +317,29 @@ public class DealDAOImpl implements DealDAO {
         }
 
         return deals;
+    }
+
+    @Override
+    public Deal findByName(String name) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Deal deal = null;
+
+        try {
+            tx = session.beginTransaction();
+            deal = session.byNaturalId(Deal.class)
+                    .using("name", name)
+                    .load();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deal;
     }
 }

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface DealDAO {
 
-    Integer addDeal(Double price, String name, String type);
+    Integer addDeal(Double price, String name, String type, Integer quantity);
 
     void listDeals();
 
-    void updateDeal(Integer dealID, Double price, String name, String type);
+    void updateDeal(Integer dealID, Double price, String name, String type, Integer quantity);
 
     void deleteDeal(Integer dealID);
 
@@ -29,4 +29,6 @@ public interface DealDAO {
     List<Deal> getDealsByNameAndType(String name, String type);
 
     List<Deal> getDealsByAll(Double price, String name, String type);
+
+    Deal findByName(String name);
 }

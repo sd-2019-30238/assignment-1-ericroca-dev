@@ -50,7 +50,7 @@ public class LoginGUI extends JFrame {
             if (error.equals("Invalid username or password!")) {
                 errorLabel.setText(error);
             } else if (error.equals("user")){
-                new UserGUI();
+                new UserGUI(username);
             }
         });
         panel.add(loginButton);

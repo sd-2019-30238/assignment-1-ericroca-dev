@@ -1,10 +1,14 @@
 package presentation;
 
+import business.implementation.CartServiceImpl;
 import business.implementation.DealServiceImpl;
+import business.service.CartService;
 import business.service.DealService;
 import models.Deal;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
@@ -13,7 +17,7 @@ public class UserGUI extends JFrame {
     private DefaultTableModel model;
     private JTable table;
 
-    public UserGUI() {
+    public UserGUI(String username) {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(null);
         setSize(640,480);
@@ -114,6 +118,16 @@ public class UserGUI extends JFrame {
         panel.add(pane);
 
         displayTable();
+
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
+                    CartService cartService = new CartServiceImpl();
+                    String name = table.getValueAt(table.getSelectedRow(), 1).toString();
+                    cartService.addToCart(username, name);
+                }
+            }
+        });
 
         priceLabel.setVisible(true);
         priceTextField.setVisible(true);

@@ -1,5 +1,7 @@
 package models;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,11 +16,15 @@ public class Deal {
     @Column(name = "price")
     private Double price;
 
+    @NaturalId
     @Column(name = "name")
     private String name;
 
     @Column(name = "type")
     private String type;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
     public Deal() {
     }
@@ -53,5 +59,13 @@ public class Deal {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
