@@ -31,4 +31,6 @@ public interface DealDAO {
     List<Deal> getDealsByAll(Double price, String name, String type);
 
     Deal findByName(String name);
+
+    Deal findByID(Integer dealID);
 }

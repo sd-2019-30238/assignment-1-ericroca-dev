@@ -101,7 +101,7 @@ public class UserGUI extends JFrame {
         JButton viewCartButton = new JButton("View cart");
         viewCartButton.setBounds(480, 20, 127, 30);
         viewCartButton.addActionListener((e) -> {
-
+            new CartGUI(username);
         });
         panel.add(viewCartButton);
 

@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.Iterator;
 import java.util.List;
@@ -116,5 +117,54 @@ public class CartDAOImpl implements CartDAO {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public List<Cart> getUserCart(Integer userID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Cart> cart = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Cart WHERE userID = :userID");
+            query.setInteger("userID", userID);
+            cart = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return cart;
+    }
+
+    @Override
+    public Cart findByIDs(Integer userID, Integer dealID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Cart cart = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Cart WHERE userID = :userID AND dealID = :dealID");
+            query.setInteger("userID", userID);
+            query.setInteger("dealID", dealID);
+            cart = (Cart) query.list().get(0);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return cart;
     }
 }

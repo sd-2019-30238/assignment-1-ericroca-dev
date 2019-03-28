@@ -342,4 +342,26 @@ public class DealDAOImpl implements DealDAO {
 
         return deal;
     }
+
+    @Override
+    public Deal findByID(Integer dealID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Deal deal = null;
+
+        try {
+            tx = session.beginTransaction();
+            deal = (Deal) session.get(Deal.class, dealID);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deal;
+    }
 }
