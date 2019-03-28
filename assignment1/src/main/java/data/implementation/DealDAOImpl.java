@@ -120,4 +120,26 @@ public class DealDAOImpl implements DealDAO {
             session.close();
         }
     }
+
+    @Override
+    public List<Deal> getDeals() {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Deal> deals = null;
+
+        try {
+            tx = session.beginTransaction();
+            deals = session.createQuery("FROM Deal").list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return deals;
+    }
 }

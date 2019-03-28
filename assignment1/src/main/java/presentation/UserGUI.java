@@ -1,5 +1,9 @@
 package presentation;
 
+import business.implementation.DealServiceImpl;
+import business.service.DealService;
+import models.Deal;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -27,6 +31,31 @@ public class UserGUI extends JFrame {
         priceTextField.setBounds(80, 20, 80, 30);
         panel.add(priceTextField);
 
+        JLabel nameLabel = new JLabel();
+        nameLabel.setBounds(160, 20, 40, 30);
+        nameLabel.setText("Name:");
+        panel.add(nameLabel);
+
+        JTextField nameTextField = new JTextField();
+        nameTextField.setBounds(200, 20, 80, 30);
+        panel.add(nameTextField);
+
+        JLabel typeLabel = new JLabel();
+        typeLabel.setBounds(280, 20, 40, 30);
+        typeLabel.setText("Type:");
+        panel.add(typeLabel);
+
+        JTextField typeTextField = new JTextField();
+        typeTextField.setBounds(320, 20, 80, 30);
+        panel.add(typeTextField);
+
+        JButton searchButton = new JButton("Search");
+        searchButton.setBounds(400, 20, 80, 30);
+        searchButton.addActionListener((e) -> {
+
+        });
+        panel.add(searchButton);
+
         String[] columns = {"Price", "Name", "Type"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model) {
@@ -41,6 +70,12 @@ public class UserGUI extends JFrame {
 
         displayTable();
 
+        priceLabel.setVisible(true);
+        priceTextField.setVisible(true);
+        nameLabel.setVisible(true);
+        nameTextField.setVisible(true);
+        typeLabel.setVisible(true);
+        typeTextField.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }
@@ -50,11 +85,12 @@ public class UserGUI extends JFrame {
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
-//        List<Employee> employeeList = adminService.getEmployees();
-//        for (Employee employee : employeeList) {
-//            Object[] row = {employee.getId(), employee.getFirstName(), employee.getLastName(),
-//                    employee.getUsername(), employee.getPassword()};
-//            model.addRow(row);
-//        }
+        DealService dealService = new DealServiceImpl();
+
+        List<Deal> dealList = dealService.getDeals();
+        for (Deal deal : dealList) {
+            Object[] row = {deal.getPrice(), deal.getName(), deal.getType()};
+            model.addRow(row);
+        }
     }
 }
