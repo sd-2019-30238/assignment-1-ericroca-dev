@@ -43,7 +43,15 @@ public class LoginGUI extends JFrame {
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(200, 245, 70, 30);
         loginButton.addActionListener((e) -> {
-
+            String username = usernameTextField.getText();
+            String password = passwordTextField.getText();
+            LoginService loginService = new LoginServiceImpl();
+            String error = loginService.validateUser(username, password);
+            if (error.equals("Invalid username or password!")) {
+                errorLabel.setText(error);
+            } else if (error.equals("user")){
+                new UserGUI();
+            }
         });
         panel.add(loginButton);
 
