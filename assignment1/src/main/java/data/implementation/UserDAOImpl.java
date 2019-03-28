@@ -1,24 +1,26 @@
-package data;
+package data.implementation;
 
-import models.Cart;
+import data.service.UserDAO;
+import models.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class CartDAO {
+public class UserDAOImpl implements UserDAO {
 
     private static SessionFactory factory;
 
-    public CartDAO() {
+    public UserDAOImpl() {
         try {
             factory = new Configuration()
                     .configure()
-                    .addAnnotatedClass(Cart.class)
+                    .addAnnotatedClass(User.class)
                     .buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object. " + ex);
@@ -26,17 +28,19 @@ public class CartDAO {
         }
     }
 
-    public Integer addCart(Integer userID, Integer dealID) {
+    @Override
+    public Integer addUser(String username, String password, String role) {
         Session session = factory.openSession();
         Transaction tx = null;
-        Integer cartID = null;
+        Integer userID = null;
 
         try {
             tx = session.beginTransaction();
-            Cart cart = new Cart();
-            cart.setUserID(userID);
-            cart.setDealID(dealID);
-            cartID = (Integer) session.save(cart);
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setRole(role);
+            userID = (Integer) session.save(user);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -47,42 +51,23 @@ public class CartDAO {
             session.close();
         }
 
-        return cartID;
+        return userID;
     }
 
-    public void listCarts() {
+    @Override
+    public void listUsers() {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            List carts = session.createQuery("FROM Cart").list();
-            for (Iterator iterator = carts.iterator(); iterator.hasNext();) {
-                Cart cart = (Cart) iterator.next();
-                System.out.println("UserID: " + cart.getUserID());
-                System.out.println("DealID: " + cart.getDealID());
+            List users = session.createQuery("FROM User").list();
+            for (Iterator iterator = users.iterator(); iterator.hasNext();) {
+                User user = (User) iterator.next();
+                System.out.println("Username: " + user.getUsername());
+                System.out.println("Password: " + user.getPassword());
+                System.out.println("Role: " + user.getRole());
             }
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    public void updateCart(Integer cartID, Integer userID, Integer dealID) {
-        Session session = factory.openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            Cart cart = (Cart) session.get(Cart.class, cartID);
-            cart.setUserID(userID);
-            cart.setDealID(dealID);
-            session.update(cart);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -94,14 +79,18 @@ public class CartDAO {
         }
     }
 
-    public void deleteCart(Integer cartID) {
+    @Override
+    public void updateUser(Integer userID, String username, String password, String role) {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            Cart cart = (Cart) session.get(Cart.class, cartID);
-            session.delete(cart);
+            User user = (User) session.get(User.class, userID);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setRole(role);
+            session.update(user);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -111,5 +100,49 @@ public class CartDAO {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public void deleteUser(Integer userID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            User user = (User) session.get(User.class, userID);
+            session.delete(user);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        User user = null;
+
+        try {
+            tx = session.beginTransaction();
+            user = session.byNaturalId(User.class)
+                    .using("username", username)
+                    .load();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return user;
     }
 }

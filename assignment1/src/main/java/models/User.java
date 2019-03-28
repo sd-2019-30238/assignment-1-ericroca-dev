@@ -1,5 +1,7 @@
 package models;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +13,7 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
+    @NaturalId
     @Column(name = "username")
     private String username;
 

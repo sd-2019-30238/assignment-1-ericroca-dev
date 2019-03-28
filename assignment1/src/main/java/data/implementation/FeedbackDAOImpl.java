@@ -1,6 +1,7 @@
-package data;
+package data.implementation;
 
-import models.Deal;
+import data.service.FeedbackDAO;
+import models.Feedback;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,15 +11,15 @@ import org.hibernate.cfg.Configuration;
 import java.util.Iterator;
 import java.util.List;
 
-public class DealDAO {
+public class FeedbackDAOImpl implements FeedbackDAO {
 
     private static SessionFactory factory;
 
-    public DealDAO() {
+    public FeedbackDAOImpl() {
         try {
             factory = new Configuration()
                     .configure()
-                    .addAnnotatedClass(Deal.class)
+                    .addAnnotatedClass(Feedback.class)
                     .buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object. " + ex);
@@ -26,18 +27,19 @@ public class DealDAO {
         }
     }
 
-    public Integer addDeal(Double price, String name, String type) {
+    @Override
+    public Integer addFeedback(Integer orderID, Integer userID, String details) {
         Session session = factory.openSession();
         Transaction tx = null;
-        Integer dealID = null;
+        Integer feedbackID = null;
 
         try {
             tx = session.beginTransaction();
-            Deal deal = new Deal();
-            deal.setPrice(price);
-            deal.setName(name);
-            deal.setType(type);
-            dealID = (Integer) session.save(deal);
+            Feedback feedback = new Feedback();
+            feedback.setOrderID(orderID);
+            feedback.setUserID(userID);
+            feedback.setDetails(details);
+            feedbackID = (Integer) session.save(feedback);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -48,44 +50,23 @@ public class DealDAO {
             session.close();
         }
 
-        return dealID;
+        return feedbackID;
     }
 
-    public void listDeals() {
+    @Override
+    public void listFeedbacks() {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            List deals = session.createQuery("FROM Deal").list();
-            for (Iterator iterator = deals.iterator(); iterator.hasNext();) {
-                Deal deal = (Deal) iterator.next();
-                System.out.println("Price: " + deal.getPrice());
-                System.out.println("Name: " + deal.getName());
-                System.out.println("Type: " + deal.getType());
+            List feedbacks = session.createQuery("FROM Feedback ").list();
+            for (Iterator iterator = feedbacks.iterator(); iterator.hasNext();) {
+                Feedback feedback = (Feedback) iterator.next();
+                System.out.println("OrderID: " + feedback.getOrderID());
+                System.out.println("UserID: " + feedback.getUserID());
+                System.out.println("Details: " + feedback.getDetails());
             }
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    public void updateDeal(Integer dealID, Double price, String name, String type) {
-        Session session = factory.openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            Deal deal = (Deal) session.get(Deal.class, dealID);
-            deal.setPrice(price);
-            deal.setName(name);
-            deal.setType(type);
-            session.update(deal);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -97,14 +78,38 @@ public class DealDAO {
         }
     }
 
-    public void deleteDeal(Integer dealID) {
+    @Override
+    public void updateFeedback(Integer feedbackID, Integer orderID, Integer userID, String details) {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            Deal deal = (Deal) session.get(Deal.class, dealID);
-            session.delete(deal);
+            Feedback feedback = (Feedback) session.get(Feedback.class, feedbackID);
+            feedback.setOrderID(orderID);
+            feedback.setUserID(userID);
+            feedback.setDetails(details);
+            session.update(feedback);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void deleteFeedback(Integer feedbackID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            Feedback feedback = (Feedback) session.get(Feedback.class, feedbackID);
+            session.delete(feedback);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

@@ -1,6 +1,7 @@
-package data;
+package data.implementation;
 
-import models.User;
+import data.service.DealDAO;
+import models.Deal;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,15 +11,15 @@ import org.hibernate.cfg.Configuration;
 import java.util.Iterator;
 import java.util.List;
 
-public class UserDAO {
+public class DealDAOImpl implements DealDAO {
 
     private static SessionFactory factory;
 
-    public UserDAO() {
+    public DealDAOImpl() {
         try {
             factory = new Configuration()
                     .configure()
-                    .addAnnotatedClass(User.class)
+                    .addAnnotatedClass(Deal.class)
                     .buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object. " + ex);
@@ -26,18 +27,19 @@ public class UserDAO {
         }
     }
 
-    public Integer addUser(String username, String password, String role) {
+    @Override
+    public Integer addDeal(Double price, String name, String type) {
         Session session = factory.openSession();
         Transaction tx = null;
-        Integer userID = null;
+        Integer dealID = null;
 
         try {
             tx = session.beginTransaction();
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setRole(role);
-            userID = (Integer) session.save(user);
+            Deal deal = new Deal();
+            deal.setPrice(price);
+            deal.setName(name);
+            deal.setType(type);
+            dealID = (Integer) session.save(deal);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -48,44 +50,23 @@ public class UserDAO {
             session.close();
         }
 
-        return userID;
+        return dealID;
     }
 
-    public void listUsers() {
+    @Override
+    public void listDeals() {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            List users = session.createQuery("FROM User").list();
-            for (Iterator iterator = users.iterator(); iterator.hasNext();) {
-                User user = (User) iterator.next();
-                System.out.println("Username: " + user.getUsername());
-                System.out.println("Password: " + user.getPassword());
-                System.out.println("Role: " + user.getRole());
+            List deals = session.createQuery("FROM Deal").list();
+            for (Iterator iterator = deals.iterator(); iterator.hasNext();) {
+                Deal deal = (Deal) iterator.next();
+                System.out.println("Price: " + deal.getPrice());
+                System.out.println("Name: " + deal.getName());
+                System.out.println("Type: " + deal.getType());
             }
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    public void updateUser(Integer userID, String username, String password, String role) {
-        Session session = factory.openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            User user = (User) session.get(User.class, userID);
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setRole(role);
-            session.update(user);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -97,14 +78,38 @@ public class UserDAO {
         }
     }
 
-    public void deleteUser(Integer userID) {
+    @Override
+    public void updateDeal(Integer dealID, Double price, String name, String type) {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            User user = (User) session.get(User.class, userID);
-            session.delete(user);
+            Deal deal = (Deal) session.get(Deal.class, dealID);
+            deal.setPrice(price);
+            deal.setName(name);
+            deal.setType(type);
+            session.update(deal);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void deleteDeal(Integer dealID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            Deal deal = (Deal) session.get(Deal.class, dealID);
+            session.delete(deal);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

@@ -1,5 +1,8 @@
 package presentation;
 
+import business.implementation.LoginServiceImpl;
+import business.service.LoginService;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -32,26 +35,32 @@ public class LoginGUI extends JFrame {
         passwordTextField.setBounds(280, 205, 160, 30);
         panel.add(passwordTextField);
 
+        JLabel errorLabel = new JLabel("", SwingConstants.CENTER);
+        errorLabel.setBounds(200, 285, 240, 30);
+        errorLabel.setForeground(Color.RED);
+        panel.add(errorLabel);
+
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(200, 245, 70, 30);
         loginButton.addActionListener((e) -> {
-//            String username = usernameTextField.getText();
-//            String password = passwordTextField.getText();
+
         });
         panel.add(loginButton);
 
         JButton createAccountButton = new JButton("Create Account");
         createAccountButton.setBounds(280, 245, 150, 30);
         createAccountButton.addActionListener((e) -> {
-
+            String username = usernameTextField.getText();
+            String password = passwordTextField.getText();
+            LoginService loginService = new LoginServiceImpl();
+            String error = loginService.createAccount(username, password);
+            if (!error.equals("OK")) {
+                errorLabel.setText(error);
+            } else {
+                errorLabel.setText("");
+            }
         });
         panel.add(createAccountButton);
-
-        JLabel errorLabel = new JLabel("", SwingConstants.CENTER);
-        errorLabel.setBounds(200, 285, 240, 30);
-        errorLabel.setText("Error");
-        errorLabel.setForeground(Color.RED);
-        panel.add(errorLabel);
 
         usernameLabel.setVisible(true);
         usernameTextField.setVisible(true);

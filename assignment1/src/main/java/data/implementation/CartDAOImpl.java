@@ -1,6 +1,7 @@
-package data;
+package data.implementation;
 
-import models.Feedback;
+import data.service.CartDAO;
+import models.Cart;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,15 +11,15 @@ import org.hibernate.cfg.Configuration;
 import java.util.Iterator;
 import java.util.List;
 
-public class FeedbackDAO {
+public class CartDAOImpl implements CartDAO {
 
     private static SessionFactory factory;
 
-    public FeedbackDAO() {
+    public CartDAOImpl() {
         try {
             factory = new Configuration()
                     .configure()
-                    .addAnnotatedClass(Feedback.class)
+                    .addAnnotatedClass(Cart.class)
                     .buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Failed to create sessionFactory object. " + ex);
@@ -26,18 +27,18 @@ public class FeedbackDAO {
         }
     }
 
-    public Integer addFeedback(Integer orderID, Integer userID, String details) {
+    @Override
+    public Integer addCart(Integer userID, Integer dealID) {
         Session session = factory.openSession();
         Transaction tx = null;
-        Integer feedbackID = null;
+        Integer cartID = null;
 
         try {
             tx = session.beginTransaction();
-            Feedback feedback = new Feedback();
-            feedback.setOrderID(orderID);
-            feedback.setUserID(userID);
-            feedback.setDetails(details);
-            feedbackID = (Integer) session.save(feedback);
+            Cart cart = new Cart();
+            cart.setUserID(userID);
+            cart.setDealID(dealID);
+            cartID = (Integer) session.save(cart);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -48,44 +49,22 @@ public class FeedbackDAO {
             session.close();
         }
 
-        return feedbackID;
+        return cartID;
     }
 
-    public void listFeedbacks() {
+    @Override
+    public void listCarts() {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            List feedbacks = session.createQuery("FROM Feedback ").list();
-            for (Iterator iterator = feedbacks.iterator(); iterator.hasNext();) {
-                Feedback feedback = (Feedback) iterator.next();
-                System.out.println("OrderID: " + feedback.getOrderID());
-                System.out.println("UserID: " + feedback.getUserID());
-                System.out.println("Details: " + feedback.getDetails());
+            List carts = session.createQuery("FROM Cart").list();
+            for (Iterator iterator = carts.iterator(); iterator.hasNext();) {
+                Cart cart = (Cart) iterator.next();
+                System.out.println("UserID: " + cart.getUserID());
+                System.out.println("DealID: " + cart.getDealID());
             }
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    public void updateFeedback(Integer feedbackID, Integer orderID, Integer userID, String details) {
-        Session session = factory.openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            Feedback feedback = (Feedback) session.get(Feedback.class, feedbackID);
-            feedback.setOrderID(orderID);
-            feedback.setUserID(userID);
-            feedback.setDetails(details);
-            session.update(feedback);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -97,14 +76,37 @@ public class FeedbackDAO {
         }
     }
 
-    public void deleteFeedback(Integer feedbackID) {
+    @Override
+    public void updateCart(Integer cartID, Integer userID, Integer dealID) {
         Session session = factory.openSession();
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
-            Feedback feedback = (Feedback) session.get(Feedback.class, feedbackID);
-            session.delete(feedback);
+            Cart cart = (Cart) session.get(Cart.class, cartID);
+            cart.setUserID(userID);
+            cart.setDealID(dealID);
+            session.update(cart);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void deleteCart(Integer cartID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            Cart cart = (Cart) session.get(Cart.class, cartID);
+            session.delete(cart);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

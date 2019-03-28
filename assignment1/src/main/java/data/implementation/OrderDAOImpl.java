@@ -1,5 +1,6 @@
-package data;
+package data.implementation;
 
+import data.service.OrderDAO;
 import models.Order;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -10,11 +11,11 @@ import org.hibernate.cfg.Configuration;
 import java.util.Iterator;
 import java.util.List;
 
-public class OrderDAO {
+public class OrderDAOImpl implements OrderDAO {
 
     private static SessionFactory factory;
 
-    public OrderDAO() {
+    public OrderDAOImpl() {
         try {
             factory = new Configuration()
                     .configure()
@@ -26,6 +27,7 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public Integer addOrder(Integer userID, String details, String status) {
         Session session = factory.openSession();
         Transaction tx = null;
@@ -51,6 +53,7 @@ public class OrderDAO {
         return orderID;
     }
 
+    @Override
     public void listOrders() {
         Session session = factory.openSession();
         Transaction tx = null;
@@ -75,6 +78,7 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public void updateOrder(Integer orderID, Integer userID, String details, String status) {
         Session session = factory.openSession();
         Transaction tx = null;
@@ -97,6 +101,7 @@ public class OrderDAO {
         }
     }
 
+    @Override
     public void deleteOrder(Integer orderID) {
         Session session = factory.openSession();
         Transaction tx = null;
