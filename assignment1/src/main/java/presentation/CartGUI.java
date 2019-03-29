@@ -30,7 +30,7 @@ public class CartGUI extends JFrame {
         add(panel);
 
         JButton checkoutButton = new JButton("Checkout");
-        checkoutButton.setBounds(200, 40, 120, 30);
+        checkoutButton.setBounds(260, 40, 120, 30);
         checkoutButton.addActionListener((e) -> {
             List<String> names = new ArrayList<>();
             List<String> prices = new ArrayList<>();
@@ -43,9 +43,11 @@ public class CartGUI extends JFrame {
                     }
                 }
             }
-            OrderService orderService = new OrderServiceImpl();
-            orderService.checkout(username, names, prices);
-            displayTable(username);
+            if (names.size() != 0 && prices.size() != 0) {
+                OrderService orderService = new OrderServiceImpl();
+                orderService.checkout(username, names, prices);
+                displayTable(username);
+            }
         });
         panel.add(checkoutButton);
 

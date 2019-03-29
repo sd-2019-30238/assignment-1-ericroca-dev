@@ -50,25 +50,70 @@ public class StaffGUI extends JFrame {
         panel.add(nameTextField);
 
         JLabel typeLabel = new JLabel();
-        typeLabel.setBounds(400, 20, 40, 30);
+        typeLabel.setBounds(40, 60, 40, 30);
         typeLabel.setText("Type:");
         panel.add(typeLabel);
 
         JTextField typeTextField = new JTextField();
-        typeTextField.setBounds(440, 20, 80, 30);
+        typeTextField.setBounds(80, 60, 80, 30);
         panel.add(typeTextField);
 
         JLabel quantityLabel = new JLabel();
-        quantityLabel.setBounds(520, 20, 40, 30);
+        quantityLabel.setBounds(160, 60, 80, 30);
         quantityLabel.setText("Quantity:");
         panel.add(quantityLabel);
 
         JTextField quantityTextField = new JTextField();
-        quantityTextField.setBounds(560, 20, 80, 30);
+        quantityTextField.setBounds(240, 60, 80, 30);
         panel.add(quantityTextField);
 
+        JButton searchButton = new JButton("Search");
+        searchButton.setBounds(40, 100, 80, 30);
+        searchButton.addActionListener((e) -> {
+            String priceText = priceTextField.getText();
+            String name = nameTextField.getText();
+            String type = typeTextField.getText();
+
+            if (!priceText.equals("") && !name.equals("") && !type.equals("")) {
+                Double price = Double.valueOf(priceText);
+                DealService dealService = new DealServiceImpl();
+                List<Deal> dealList = dealService.getFilteredDeals(price, name, type);
+                displayTable(dealList);
+            } else if (!priceText.equals("") && !name.equals("")) {
+                Double price = Double.valueOf(priceText);
+                DealService dealService = new DealServiceImpl();
+                List<Deal> dealList = dealService.getFilteredDealsByPriceAndName(price, name);
+                displayTable(dealList);
+            } else if (!priceText.equals("") && !type.equals("")) {
+                Double price = Double.valueOf(priceText);
+                DealService dealService = new DealServiceImpl();
+                List<Deal> dealList = dealService.getFilteredDealsByPriceAndType(price, type);
+                displayTable(dealList);
+            } else if (!name.equals("") && !type.equals("")) {
+                DealService dealService = new DealServiceImpl();
+                List<Deal> dealList = dealService.getFilteredDealsByNameAndType(name, type);
+                displayTable(dealList);
+            } else if (!priceText.equals("")) {
+                Double price = Double.valueOf(priceText);
+                DealService dealService = new DealServiceImpl();
+                List<Deal> dealList = dealService.getFilteredDealsByPrice(price);
+                displayTable(dealList);
+            } else if (!name.equals("")) {
+                DealService dealService = new DealServiceImpl();
+                List<Deal> dealList = dealService.getFilteredDealsByName(name);
+                displayTable(dealList);
+            } else if (!type.equals("")) {
+                DealService dealService = new DealServiceImpl();
+                List<Deal> dealList = dealService.getFilteredDealsByType(type);
+                displayTable(dealList);
+            } else {
+                displayTable();
+            }
+        });
+        panel.add(searchButton);
+
         JButton addButton = new JButton("Add");
-        addButton.setBounds(40, 60, 80, 30);
+        addButton.setBounds(120, 100, 80, 30);
         addButton.addActionListener((e) -> {
             String priceText = priceTextField.getText();
             String name = nameTextField.getText();
@@ -87,7 +132,7 @@ public class StaffGUI extends JFrame {
         panel.add(addButton);
 
         JButton editButton = new JButton("Edit");
-        editButton.setBounds(120, 60, 80, 30);
+        editButton.setBounds(200, 100, 80, 30);
         editButton.addActionListener((e) -> {
             String idText = idTextField.getText();
             String priceText = priceTextField.getText();
@@ -108,7 +153,7 @@ public class StaffGUI extends JFrame {
         panel.add(editButton);
 
         JButton deleteButton = new JButton("Delete");
-        deleteButton.setBounds(200, 60, 80, 30);
+        deleteButton.setBounds(280, 100, 80, 30);
         deleteButton.addActionListener((e) -> {
             String idText = idTextField.getText();
 
@@ -122,7 +167,7 @@ public class StaffGUI extends JFrame {
         panel.add(deleteButton);
 
         JButton viewOrdersButton = new JButton("View orders");
-        viewOrdersButton.setBounds(280, 60, 120, 30);
+        viewOrdersButton.setBounds(360, 100, 120, 30);
         viewOrdersButton.addActionListener((e) -> {
             new StaffOrderGUI();
         });
@@ -137,7 +182,7 @@ public class StaffGUI extends JFrame {
         };
 
         JScrollPane pane = new JScrollPane(table);
-        pane.setBounds(40, 120, 560, 300);
+        pane.setBounds(40, 160, 560, 260);
         panel.add(pane);
 
         displayTable();
@@ -170,6 +215,17 @@ public class StaffGUI extends JFrame {
         List<Deal> dealList = dealService.getDeals();
         for (Deal deal : dealList) {
             Object[] row = {deal.getId(), deal.getPrice(), deal.getName(), deal.getType(), deal.getQuantity()};
+            model.addRow(row);
+        }
+    }
+
+    private void displayTable(List<Deal> dealList) {
+        String[] columns = {"ID", "Price", "Name", "Type", "Quantity"};
+        model = new DefaultTableModel(columns, 0);
+        table.setModel(model);
+
+        for (Deal deal : dealList) {
+            Object[] row = {deal.getId(), deal.getPrice(), deal.getName(), deal.getType()};
             model.addRow(row);
         }
     }
