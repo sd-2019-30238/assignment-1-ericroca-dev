@@ -2,14 +2,17 @@ package presentation;
 
 import business.implementation.CartServiceImpl;
 import business.implementation.DealServiceImpl;
+import business.implementation.OrderServiceImpl;
 import business.service.CartService;
 import business.service.DealService;
+import business.service.OrderService;
 import models.Deal;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartGUI extends JFrame {
@@ -26,12 +29,25 @@ public class CartGUI extends JFrame {
         panel.setSize(640, 480);
         add(panel);
 
-        JButton viewOrdersButton = new JButton("View orders");
-        viewOrdersButton.setBounds(260, 40, 120, 30);
-        viewOrdersButton.addActionListener((e) -> {
-
+        JButton checkoutButton = new JButton("Checkout");
+        checkoutButton.setBounds(200, 40, 120, 30);
+        checkoutButton.addActionListener((e) -> {
+            List<String> names = new ArrayList<>();
+            List<String> prices = new ArrayList<>();
+            for (int row = 0; row < model.getRowCount(); row++){
+                for (int column = 0; column < model.getColumnCount() - 1; column++){
+                    if (column == 0) {
+                        prices.add(model.getValueAt(row, column).toString());
+                    } else if (column == 1) {
+                        names.add(model.getValueAt(row, column).toString());
+                    }
+                }
+            }
+            OrderService orderService = new OrderServiceImpl();
+            orderService.checkout(username, names, prices);
+            displayTable(username);
         });
-        panel.add(viewOrdersButton);
+        panel.add(checkoutButton);
 
         String[] columns = {"Price", "Name", "Type"};
         model = new DefaultTableModel(columns, 0);
@@ -58,7 +74,7 @@ public class CartGUI extends JFrame {
             }
         });
 
-        viewOrdersButton.setVisible(true);
+        checkoutButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }

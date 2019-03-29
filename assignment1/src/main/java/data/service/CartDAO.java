@@ -17,4 +17,6 @@ public interface CartDAO {
     List<Cart> getUserCart(Integer userID);
 
     Cart findByIDs(Integer userID, Integer dealID);
+
+    void deleteByID(Integer userID);
 }

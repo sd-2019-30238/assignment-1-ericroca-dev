@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.Iterator;
 import java.util.List;
@@ -119,5 +120,51 @@ public class OrderDAOImpl implements OrderDAO {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public List<Order> getOrders() {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Order> orders = null;
+
+        try {
+            tx = session.beginTransaction();
+            orders = session.createQuery("FROM Order").list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return orders;
+    }
+
+    @Override
+    public List<Order> getUserOrders(Integer userID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Order> orders = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Order WHERE userID = :userID");
+            query.setInteger("userID", userID);
+            orders = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return orders;
     }
 }

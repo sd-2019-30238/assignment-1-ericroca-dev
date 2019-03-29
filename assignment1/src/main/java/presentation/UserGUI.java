@@ -54,7 +54,7 @@ public class UserGUI extends JFrame {
         panel.add(typeTextField);
 
         JButton searchButton = new JButton("Search");
-        searchButton.setBounds(400, 20, 80, 30);
+        searchButton.setBounds(40, 60, 120, 30);
         searchButton.addActionListener((e) -> {
             String priceText = priceTextField.getText();
             String name = nameTextField.getText();
@@ -99,11 +99,19 @@ public class UserGUI extends JFrame {
         panel.add(searchButton);
 
         JButton viewCartButton = new JButton("View cart");
-        viewCartButton.setBounds(480, 20, 127, 30);
+        viewCartButton.setBounds(160, 60, 120, 30);
         viewCartButton.addActionListener((e) -> {
             new CartGUI(username);
         });
         panel.add(viewCartButton);
+
+        JButton viewOrdersButton = new JButton("View orders");
+        viewOrdersButton.setBounds(280, 60, 120, 30);
+        viewOrdersButton.addActionListener((e) -> {
+            new UserOrderGUI(username);
+        });
+        panel.add(viewOrdersButton);
+
 
         String[] columns = {"Price", "Name", "Type"};
         model = new DefaultTableModel(columns, 0);
@@ -114,7 +122,7 @@ public class UserGUI extends JFrame {
         };
 
         JScrollPane pane = new JScrollPane(table);
-        pane.setBounds(40, 80, 560, 340);
+        pane.setBounds(40, 120, 560, 300);
         panel.add(pane);
 
         displayTable();
@@ -135,6 +143,9 @@ public class UserGUI extends JFrame {
         nameTextField.setVisible(true);
         typeLabel.setVisible(true);
         typeTextField.setVisible(true);
+        searchButton.setVisible(true);
+        viewCartButton.setVisible(true);
+        viewOrdersButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }

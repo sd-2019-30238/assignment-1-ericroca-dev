@@ -167,4 +167,25 @@ public class CartDAOImpl implements CartDAO {
 
         return cart;
     }
+
+    @Override
+    public void deleteByID(Integer userID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("DELETE Cart WHERE userID = :userID");
+            query.setInteger("userID", userID);
+            query.executeUpdate();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
 }

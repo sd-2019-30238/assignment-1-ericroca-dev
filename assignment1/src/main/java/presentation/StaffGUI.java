@@ -122,10 +122,11 @@ public class StaffGUI extends JFrame {
         panel.add(deleteButton);
 
         JButton viewOrdersButton = new JButton("View orders");
-        viewOrdersButton.setBounds(280, 60, 80, 30);
+        viewOrdersButton.setBounds(280, 60, 120, 30);
         viewOrdersButton.addActionListener((e) -> {
-
+            new StaffOrderGUI();
         });
+        panel.add(viewOrdersButton);
 
         String[] columns = {"ID", "Price", "Name", "Type", "Quantity"};
         model = new DefaultTableModel(columns, 0);
@@ -154,6 +155,7 @@ public class StaffGUI extends JFrame {
         addButton.setVisible(true);
         editButton.setVisible(true);
         deleteButton.setVisible(true);
+        viewOrdersButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }
