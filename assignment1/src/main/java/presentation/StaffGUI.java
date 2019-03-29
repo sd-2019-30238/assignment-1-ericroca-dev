@@ -22,48 +22,112 @@ public class StaffGUI extends JFrame {
         panel.setSize(640, 480);
         add(panel);
 
+        JLabel idLabel = new JLabel();
+        idLabel.setBounds(40, 20, 40, 30);
+        idLabel.setText("ID:");
+        panel.add(idLabel);
+
+        JTextField idTextField = new JTextField();
+        idTextField.setBounds(80, 20, 80, 30);
+        panel.add(idTextField);
+
         JLabel priceLabel = new JLabel();
-        priceLabel.setBounds(40, 20, 40, 30);
+        priceLabel.setBounds(160, 20, 40, 30);
         priceLabel.setText("Price:");
         panel.add(priceLabel);
 
         JTextField priceTextField = new JTextField();
-        priceTextField.setBounds(80, 20, 80, 30);
+        priceTextField.setBounds(200, 20, 80, 30);
         panel.add(priceTextField);
 
         JLabel nameLabel = new JLabel();
-        nameLabel.setBounds(160, 20, 40, 30);
+        nameLabel.setBounds(280, 20, 40, 30);
         nameLabel.setText("Name:");
         panel.add(nameLabel);
 
         JTextField nameTextField = new JTextField();
-        nameTextField.setBounds(200, 20, 80, 30);
+        nameTextField.setBounds(320, 20, 80, 30);
         panel.add(nameTextField);
 
         JLabel typeLabel = new JLabel();
-        typeLabel.setBounds(280, 20, 40, 30);
+        typeLabel.setBounds(400, 20, 40, 30);
         typeLabel.setText("Type:");
         panel.add(typeLabel);
 
         JTextField typeTextField = new JTextField();
-        typeTextField.setBounds(320, 20, 80, 30);
+        typeTextField.setBounds(440, 20, 80, 30);
         panel.add(typeTextField);
 
-        JButton searchButton = new JButton("Search");
-        searchButton.setBounds(400, 20, 80, 30);
-        searchButton.addActionListener((e) -> {
+        JLabel quantityLabel = new JLabel();
+        quantityLabel.setBounds(520, 20, 40, 30);
+        quantityLabel.setText("Quantity:");
+        panel.add(quantityLabel);
+
+        JTextField quantityTextField = new JTextField();
+        quantityTextField.setBounds(560, 20, 80, 30);
+        panel.add(quantityTextField);
+
+        JButton addButton = new JButton("Add");
+        addButton.setBounds(40, 60, 80, 30);
+        addButton.addActionListener((e) -> {
+            String priceText = priceTextField.getText();
+            String name = nameTextField.getText();
+            String type = typeTextField.getText();
+            String quantityText = quantityTextField.getText();
+
+            if (!priceText.equals("") && !name.equals("") && !type.equals("") &&
+                    !quantityText.equals("")) {
+                Double price = Double.valueOf(priceText);
+                Integer quantity = Integer.valueOf(quantityText);
+                DealService dealService = new DealServiceImpl();
+                dealService.addDeal(price, name, type, quantity);
+                displayTable();
+            }
+        });
+        panel.add(addButton);
+
+        JButton editButton = new JButton("Edit");
+        editButton.setBounds(120, 60, 80, 30);
+        editButton.addActionListener((e) -> {
+            String idText = idTextField.getText();
+            String priceText = priceTextField.getText();
+            String name = nameTextField.getText();
+            String type = typeTextField.getText();
+            String quantityText = quantityTextField.getText();
+
+            if (!idText.equals("") && !priceText.equals("") && !name.equals("") && !type.equals("") &&
+                    !quantityText.equals("")) {
+                Integer id = Integer.valueOf(idText);
+                Double price = Double.valueOf(priceText);
+                Integer quantity = Integer.valueOf(quantityText);
+                DealService dealService = new DealServiceImpl();
+                dealService.editDeal(id, price, name, type, quantity);
+                displayTable();
+            }
+        });
+        panel.add(editButton);
+
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setBounds(200, 60, 80, 30);
+        deleteButton.addActionListener((e) -> {
+            String idText = idTextField.getText();
+
+            if (!idText.equals("")) {
+                Integer id = Integer.valueOf(idText);
+                DealService dealService = new DealServiceImpl();
+                dealService.deleteDeal(id);
+                displayTable();
+            }
+        });
+        panel.add(deleteButton);
+
+        JButton viewOrdersButton = new JButton("View orders");
+        viewOrdersButton.setBounds(280, 60, 80, 30);
+        viewOrdersButton.addActionListener((e) -> {
 
         });
-        panel.add(searchButton);
 
-        JButton viewCartButton = new JButton("View cart");
-        viewCartButton.setBounds(480, 20, 127, 30);
-        viewCartButton.addActionListener((e) -> {
-
-        });
-        panel.add(viewCartButton);
-
-        String[] columns = {"Price", "Name", "Type"};
+        String[] columns = {"ID", "Price", "Name", "Type", "Quantity"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model) {
             public boolean isCellEditable(int row, int column) {
@@ -72,23 +136,30 @@ public class StaffGUI extends JFrame {
         };
 
         JScrollPane pane = new JScrollPane(table);
-        pane.setBounds(40, 80, 560, 340);
+        pane.setBounds(40, 120, 560, 300);
         panel.add(pane);
 
         displayTable();
 
+        idLabel.setVisible(true);
+        idTextField.setVisible(true);
         priceLabel.setVisible(true);
         priceTextField.setVisible(true);
         nameLabel.setVisible(true);
         nameTextField.setVisible(true);
         typeLabel.setVisible(true);
         typeTextField.setVisible(true);
+        quantityLabel.setVisible(true);
+        quantityTextField.setVisible(true);
+        addButton.setVisible(true);
+        editButton.setVisible(true);
+        deleteButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }
 
     private void displayTable() {
-        String[] columns = {"Price", "Name", "Type"};
+        String[] columns = {"ID", "Price", "Name", "Type", "Quantity"};
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
@@ -96,7 +167,7 @@ public class StaffGUI extends JFrame {
 
         List<Deal> dealList = dealService.getDeals();
         for (Deal deal : dealList) {
-            Object[] row = {deal.getPrice(), deal.getName(), deal.getType()};
+            Object[] row = {deal.getId(), deal.getPrice(), deal.getName(), deal.getType(), deal.getQuantity()};
             model.addRow(row);
         }
     }

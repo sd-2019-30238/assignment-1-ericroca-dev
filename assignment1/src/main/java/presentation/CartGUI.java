@@ -26,6 +26,13 @@ public class CartGUI extends JFrame {
         panel.setSize(640, 480);
         add(panel);
 
+        JButton viewOrdersButton = new JButton("View orders");
+        viewOrdersButton.setBounds(260, 40, 120, 30);
+        viewOrdersButton.addActionListener((e) -> {
+
+        });
+        panel.add(viewOrdersButton);
+
         String[] columns = {"Price", "Name", "Type"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model) {
@@ -35,7 +42,7 @@ public class CartGUI extends JFrame {
         };
 
         JScrollPane pane = new JScrollPane(table);
-        pane.setBounds(40, 40, 560, 380);
+        pane.setBounds(40, 80, 560, 340);
         panel.add(pane);
 
         displayTable(username);
@@ -51,6 +58,7 @@ public class CartGUI extends JFrame {
             }
         });
 
+        viewOrdersButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }

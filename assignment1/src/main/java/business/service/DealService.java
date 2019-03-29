@@ -22,4 +22,10 @@ public interface DealService {
 
     List<Deal> getFilteredDeals(Double price, String name, String type);
 
+    void addDeal(Double price, String name, String type, Integer quantity);
+
+    void editDeal(Integer id, Double price, String name, String type, Integer quantity);
+
+    void deleteDeal(Integer id);
+
 }

@@ -51,6 +51,8 @@ public class LoginGUI extends JFrame {
                 errorLabel.setText(error);
             } else if (error.equals("user")){
                 new UserGUI(username);
+            } else if (error.equals("staff")) {
+                new StaffGUI();
             }
         });
         panel.add(loginButton);

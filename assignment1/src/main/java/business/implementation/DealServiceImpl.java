@@ -6,6 +6,8 @@ import data.service.DealDAO;
 import models.Deal;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DealServiceImpl implements DealService {
 
@@ -55,5 +57,37 @@ public class DealServiceImpl implements DealService {
     public List<Deal> getFilteredDeals(Double price, String name, String type) {
         DealDAO dealDAO = new DealDAOImpl();
         return dealDAO.getDealsByAll(price, name, type);
+    }
+
+    @Override
+    public void addDeal(Double price, String name, String type, Integer quantity) {
+        Pattern pattern = Pattern.compile("^[a-z0-9_-]{1,45}$");
+        Matcher nameMatcher = pattern.matcher(name);
+        Matcher typeMatcher = pattern.matcher(type);
+
+        if (nameMatcher.matches() && typeMatcher.matches() && price > 0 && quantity >= 0) {
+            DealDAO dealDAO = new DealDAOImpl();
+            dealDAO.addDeal(price, name, type, quantity);
+        }
+    }
+
+    @Override
+    public void editDeal(Integer id, Double price, String name, String type, Integer quantity) {
+        Pattern pattern = Pattern.compile("^[a-z0-9_-]{1,45}$");
+        Matcher nameMatcher = pattern.matcher(name);
+        Matcher typeMatcher = pattern.matcher(type);
+
+        if (id > 0 && nameMatcher.matches() && typeMatcher.matches() && price > 0 && quantity >= 0) {
+            DealDAO dealDAO = new DealDAOImpl();
+            dealDAO.updateDeal(id, price, name, type, quantity);
+        }
+    }
+
+    @Override
+    public void deleteDeal(Integer id) {
+        if (id > 0) {
+            DealDAO dealDAO = new DealDAOImpl();
+            dealDAO.deleteDeal(id);
+        }
     }
 }
