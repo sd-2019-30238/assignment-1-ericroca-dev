@@ -169,6 +169,30 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    public List<Order> getUserDeliveredOrders(Integer userID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        List<Order> orders = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Order WHERE userID = :userID AND status = 'delivered'");
+            query.setInteger("userID", userID);
+            orders = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return orders;
+    }
+
+    @Override
     public Order findById(Integer ID) {
         Session session = factory.openSession();
         Transaction tx = null;

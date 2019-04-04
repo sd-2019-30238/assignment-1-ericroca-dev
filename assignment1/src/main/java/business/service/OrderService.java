@@ -12,5 +12,7 @@ public interface OrderService {
 
     List<Order> getUserOrders(String username);
 
+    List<Order> getUserDeliveredOrders(String username);
+
     void updateStatus(Integer ID, String status);
 }

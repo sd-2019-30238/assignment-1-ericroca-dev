@@ -76,6 +76,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getUserDeliveredOrders(String username) {
+        UserDAO userDAO = new UserDAOImpl();
+        OrderDAO orderDAO = new OrderDAOImpl();
+
+        User user = userDAO.findByUsername(username);
+        List<Order> orderList = new ArrayList<>();
+        if (user != null) {
+            orderList = orderDAO.getUserDeliveredOrders(user.getId());
+        }
+
+        return orderList;
+    }
+
+    @Override
     public void updateStatus(Integer ID, String status) {
         Pattern pattern = Pattern.compile("^[a-z0-9_-]{1,45}$");
         Matcher statusMatcher = pattern.matcher(status);

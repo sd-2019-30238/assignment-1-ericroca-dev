@@ -1,10 +1,15 @@
 package presentation;
 
+import business.implementation.LoginServiceImpl;
 import business.implementation.OrderServiceImpl;
+import business.service.LoginService;
 import business.service.OrderService;
 import models.Order;
+import models.User;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -14,6 +19,7 @@ public class UserOrderHistoryGUI extends JFrame {
 
     private DefaultTableModel model;
     private JTable table;
+    private List<Order> orderList;
 
     public UserOrderHistoryGUI(String username) {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -53,16 +59,18 @@ public class UserOrderHistoryGUI extends JFrame {
 
         displayTable(username);
 
-//        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//            public void valueChanged(ListSelectionEvent event) {
-//                if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
-//                    CartService cartService = new CartServiceImpl();
-//                    String name = table.getValueAt(table.getSelectedRow(), 1).toString();
-//                    cartService.deleteItem(username, name);
-//                    displayTable(username);
-//                }
-//            }
-//        });
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
+                    Order order = orderList.get(table.getSelectedRow());
+
+                    LoginService loginService = new LoginServiceImpl();
+                    User user = loginService.getUserByUsername(username);
+
+                    new FeedbackGUI(order.getId(), user.getId());
+                }
+            }
+        });
 
         panel.setVisible(true);
         setVisible(true);
@@ -75,12 +83,10 @@ public class UserOrderHistoryGUI extends JFrame {
 
         OrderService orderService = new OrderServiceImpl();
 
-        List<Order> orderList = orderService.getUserOrders(username);
+        orderList = orderService.getUserDeliveredOrders(username);
         for (Order order : orderList) {
-            if (order.getStatus().equals("delivered")) {
-                Object[] row = {order.getDetails(), order.getStatus()};
-                model.addRow(row);
-            }
+            Object[] row = {order.getDetails(), order.getStatus()};
+            model.addRow(row);
         }
     }
 }

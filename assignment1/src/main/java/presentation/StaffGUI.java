@@ -3,6 +3,8 @@ package presentation;
 import business.implementation.DealServiceImpl;
 import business.service.DealService;
 import models.Deal;
+import models.Discount;
+import models.DiscountFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -173,6 +175,24 @@ public class StaffGUI extends JFrame {
         });
         panel.add(viewOrdersButton);
 
+        JButton halfOffButton = new JButton("Half Off");
+        halfOffButton.setBounds(480, 100, 80, 30);
+        halfOffButton.addActionListener((e) -> {
+            String idText = idTextField.getText();
+
+            if (!idText.equals("")) {
+                Integer id = Integer.valueOf(idText);
+
+                DiscountFactory discountFactory = new DiscountFactory();
+                Discount halfOffDiscount = discountFactory.getDiscount("HALFOFF");
+
+                DealService dealService = new DealServiceImpl();
+                dealService.applyDiscount(id, halfOffDiscount);
+                displayTable();
+            }
+        });
+        panel.add(halfOffButton);
+
         String[] columns = {"ID", "Price", "Name", "Type", "Quantity"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model) {
@@ -201,6 +221,7 @@ public class StaffGUI extends JFrame {
         editButton.setVisible(true);
         deleteButton.setVisible(true);
         viewOrdersButton.setVisible(true);
+        halfOffButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }

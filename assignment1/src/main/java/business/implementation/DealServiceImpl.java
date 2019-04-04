@@ -4,6 +4,7 @@ import business.service.DealService;
 import data.implementation.DealDAOImpl;
 import data.service.DealDAO;
 import models.Deal;
+import models.Discount;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -88,6 +89,19 @@ public class DealServiceImpl implements DealService {
         if (id > 0) {
             DealDAO dealDAO = new DealDAOImpl();
             dealDAO.deleteDeal(id);
+        }
+    }
+
+    @Override
+    public void applyDiscount(Integer id, Discount discount) {
+        if (id > 0) {
+            DealDAO dealDAO = new DealDAOImpl();
+            Deal deal = dealDAO.findByID(id);
+            if (deal != null) {
+                Deal discountedDeal = discount.applyDiscount(deal);
+                dealDAO.updateDeal(discountedDeal.getId(), discountedDeal.getPrice(), discountedDeal.getName(),
+                        discountedDeal.getType(), discountedDeal.getQuantity());
+            }
         }
     }
 }

@@ -44,4 +44,15 @@ public class LoginServiceImpl implements LoginService {
         }
         return "Invalid username or password!";
     }
+
+    @Override
+    public User getUserByUsername(String username) {
+        Pattern pattern = Pattern.compile("^[a-z0-9_-]{3,15}$");
+        Matcher usernameMatcher = pattern.matcher(username);
+        if (usernameMatcher.matches()) {
+            UserDAO userDAO = new UserDAOImpl();
+            return userDAO.findByUsername(username);
+        }
+        return null;
+    }
 }
