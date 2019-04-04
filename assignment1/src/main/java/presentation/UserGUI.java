@@ -112,6 +112,12 @@ public class UserGUI extends JFrame {
         });
         panel.add(viewOrdersButton);
 
+        JButton viewOrderHistoryButton = new JButton("Order history");
+        viewOrderHistoryButton.setBounds(400, 60, 120, 30);
+        viewOrderHistoryButton.addActionListener((e) -> {
+            new UserOrderHistoryGUI(username);
+        });
+        panel.add(viewOrderHistoryButton);
 
         String[] columns = {"Price", "Name", "Type"};
         model = new DefaultTableModel(columns, 0);
@@ -146,6 +152,7 @@ public class UserGUI extends JFrame {
         searchButton.setVisible(true);
         viewCartButton.setVisible(true);
         viewOrdersButton.setVisible(true);
+        viewOrderHistoryButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }
