@@ -11,4 +11,6 @@ public interface OrderService {
     void checkout(String username, List<String> names, List<String> prices);
 
     List<Order> getUserOrders(String username);
+
+    void updateStatus(Integer ID, String status);
 }

@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class StaffOrderGUI extends JFrame {
@@ -24,11 +26,59 @@ public class StaffOrderGUI extends JFrame {
         panel.setSize(640, 480);
         add(panel);
 
+        JLabel idLabel = new JLabel();
+        idLabel.setBounds(40, 20, 60, 30);
+        idLabel.setText("ID:");
+        panel.add(idLabel);
+
+        JTextField idTextField = new JTextField();
+        idTextField.setBounds(100, 20, 80, 30);
+        panel.add(idTextField);
+
+        JLabel statusLabel = new JLabel();
+        statusLabel.setBounds(180, 20, 60, 30);
+        statusLabel.setText("Status:");
+        panel.add(statusLabel);
+
+        JTextField statusTextField = new JTextField();
+        statusTextField.setBounds(240, 20, 80, 30);
+        panel.add(statusTextField);
+
+        JButton updateButton = new JButton("Update");
+        updateButton.setBounds(320, 20, 80, 30);
+        updateButton.addActionListener((e) -> {
+            String idText = idTextField.getText();
+            String status = statusTextField.getText();
+
+            if (!idText.equals("") && !status.equals("")) {
+                Integer id = Integer.valueOf(idText);
+                OrderService orderService = new OrderServiceImpl();
+                orderService.updateStatus(id, status);
+                displayTable();
+            }
+        });
+        panel.add(updateButton);
+
         String[] columns = {"ID", "User ID", "Details", "Status"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model) {
             public boolean isCellEditable(int row, int column) {
                 return false;
+            }
+
+            public String getToolTipText(MouseEvent event) {
+                String tip = null;
+                Point point = event.getPoint();
+                int rowIndex = rowAtPoint(point);
+                int colIndex = columnAtPoint(point);
+
+                try {
+                    tip = getValueAt(rowIndex, colIndex).toString();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
+
+                return tip;
             }
         };
 
@@ -49,6 +99,11 @@ public class StaffOrderGUI extends JFrame {
 //            }
 //        });
 
+        idLabel.setVisible(true);
+        idTextField.setVisible(true);
+        statusLabel.setVisible(true);
+        statusTextField.setVisible(true);
+        updateButton.setVisible(true);
         panel.setVisible(true);
         setVisible(true);
     }

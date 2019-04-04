@@ -6,6 +6,8 @@ import models.Order;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class UserOrderGUI extends JFrame {
@@ -28,6 +30,21 @@ public class UserOrderGUI extends JFrame {
         table = new JTable(model) {
             public boolean isCellEditable(int row, int column) {
                 return false;
+            }
+
+            public String getToolTipText(MouseEvent event) {
+                String tip = null;
+                Point point = event.getPoint();
+                int rowIndex = rowAtPoint(point);
+                int colIndex = columnAtPoint(point);
+
+                try {
+                    tip = getValueAt(rowIndex, colIndex).toString();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
+
+                return tip;
             }
         };
 

@@ -15,6 +15,8 @@ import models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -71,5 +73,20 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderList;
+    }
+
+    @Override
+    public void updateStatus(Integer ID, String status) {
+        Pattern pattern = Pattern.compile("^[a-z0-9_-]{1,45}$");
+        Matcher statusMatcher = pattern.matcher(status);
+
+        if (statusMatcher.matches()) {
+            OrderDAO orderDAO = new OrderDAOImpl();
+
+            Order order = orderDAO.findById(ID);
+            if (order != null) {
+                orderDAO.updateOrder(order.getId(), order.getUserID(), order.getDetails(), status);
+            }
+        }
     }
 }

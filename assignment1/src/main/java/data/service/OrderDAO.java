@@ -17,4 +17,6 @@ public interface OrderDAO {
     List<Order> getOrders();
 
     List<Order> getUserOrders(Integer userID);
+
+    Order findById(Integer ID);
 }

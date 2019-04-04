@@ -167,4 +167,26 @@ public class OrderDAOImpl implements OrderDAO {
 
         return orders;
     }
+
+    @Override
+    public Order findById(Integer ID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Order order = null;
+
+        try {
+            tx = session.beginTransaction();
+            order = (Order) session.get(Order.class, ID);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return order;
+    }
 }
