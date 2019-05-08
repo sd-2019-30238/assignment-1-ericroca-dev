@@ -98,9 +98,9 @@ public class DealServiceImpl implements DealService {
             DealDAO dealDAO = new DealDAOImpl();
             Deal deal = dealDAO.findByID(id);
             if (deal != null) {
-                Deal discountedDeal = discount.applyDiscount(deal);
-                dealDAO.updateDeal(discountedDeal.getId(), discountedDeal.getPrice(), discountedDeal.getName(),
-                        discountedDeal.getType(), discountedDeal.getQuantity());
+                discount.applyDiscount(deal);
+                dealDAO.updateDeal(deal.getId(), deal.getPrice(), deal.getName(),
+                        deal.getType(), deal.getQuantity());
             }
         }
     }

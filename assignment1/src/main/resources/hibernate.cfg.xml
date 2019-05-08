@@ -22,7 +22,7 @@
     </property>
 
     <property name="connection.password">
-      root
+      password
     </property>
 
     <!-- DB schema will be updated if needed -->
