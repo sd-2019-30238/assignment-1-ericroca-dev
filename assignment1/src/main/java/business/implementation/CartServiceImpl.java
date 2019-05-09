@@ -10,14 +10,19 @@ import data.service.UserDAO;
 import models.Cart;
 import models.Deal;
 import models.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
 public class CartServiceImpl implements CartService {
 
     @Override
-    public void addToCart(String username, String name) {
+    @RequestMapping(value = "/{username}/cart", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void addToCart(@PathVariable("username") String username, @RequestParam("name") String name) {
         UserDAO userDAO = new UserDAOImpl();
         DealDAO dealDAO = new DealDAOImpl();
         CartDAO cartDAO = new CartDAOImpl();
@@ -31,7 +36,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Deal> getUserCart(String username) {
+    @RequestMapping(value = "{username}/cart", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Deal> getUserCart(@PathVariable("username") String username) {
         UserDAO userDAO = new UserDAOImpl();
         DealDAO dealDAO = new DealDAOImpl();
         CartDAO cartDAO = new CartDAOImpl();
@@ -51,7 +58,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteItem(String username, String name) {
+    @RequestMapping(value = "{username}/cart", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void deleteItem(@PathVariable("username") String username, @RequestParam("name") String name) {
         UserDAO userDAO = new UserDAOImpl();
         DealDAO dealDAO = new DealDAOImpl();
         CartDAO cartDAO = new CartDAOImpl();
