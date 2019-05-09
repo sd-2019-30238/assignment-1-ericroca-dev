@@ -1,9 +1,9 @@
-package springtest;
+package controller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"business.implementation"})
+@SpringBootApplication(scanBasePackages = {"controller"})
 public class Application {
 
     public static void main(String[] args) {
