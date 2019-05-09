@@ -3,10 +3,12 @@ package business.implementation;
 import business.service.FeedbackService;
 import data.implementation.FeedbackDAOImpl;
 import data.service.FeedbackDAO;
+import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
