@@ -4,10 +4,12 @@ import business.service.LoginService;
 import data.implementation.UserDAOImpl;
 import data.service.UserDAO;
 import models.User;
+import org.springframework.stereotype.Service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class LoginServiceImpl implements LoginService {
 
     @Override
