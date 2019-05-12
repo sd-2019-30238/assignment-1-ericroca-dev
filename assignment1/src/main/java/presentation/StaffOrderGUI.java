@@ -3,6 +3,7 @@ package presentation;
 import business.implementation.OrderServiceImpl;
 import business.service.OrderService;
 import models.Order;
+import models.User;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

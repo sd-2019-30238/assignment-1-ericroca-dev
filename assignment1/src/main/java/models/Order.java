@@ -1,10 +1,11 @@
 package models;
 
 import javax.persistence.*;
+import java.util.Observable;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends Observable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,5 +54,7 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+        setChanged();
+        notifyObservers(status);
     }
 }

@@ -2,6 +2,7 @@ package data.implementation;
 
 import data.service.OrderDAO;
 import models.Order;
+import models.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,8 +16,11 @@ import java.util.List;
 public class OrderDAOImpl implements OrderDAO {
 
     private static SessionFactory factory;
+    User user;
 
     public OrderDAOImpl() {
+        user = new User();
+
         try {
             factory = new Configuration()
                     .configure()
@@ -87,6 +91,7 @@ public class OrderDAOImpl implements OrderDAO {
         try {
             tx = session.beginTransaction();
             Order order = (Order) session.get(Order.class, orderID);
+            order.addObserver(user);
             order.setUserID(userID);
             order.setDetails(details);
             order.setStatus(status);

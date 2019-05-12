@@ -3,10 +3,15 @@ package models;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.Observable;
+import java.util.Observer;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Observer {
+
+    @Transient
+    private Order order;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,5 +61,11 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public void update(Observable observable, Object object) {
+        order = (Order) observable;
+        System.out.println("Observer: " + order.getStatus());
     }
 }
