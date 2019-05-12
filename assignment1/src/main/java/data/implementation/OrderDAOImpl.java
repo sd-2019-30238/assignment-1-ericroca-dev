@@ -16,7 +16,7 @@ import java.util.List;
 public class OrderDAOImpl implements OrderDAO {
 
     private static SessionFactory factory;
-    User user;
+    private User user;
 
     public OrderDAOImpl() {
         user = new User();
