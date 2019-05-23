@@ -1,6 +1,6 @@
-package business.services;
+package business.services.write;
 
-import business.interfaces.OrderService;
+import business.interfaces.write.OrderWrite;
 import data.implementation.CartDAOImpl;
 import data.implementation.DealDAOImpl;
 import data.implementation.OrderDAOImpl;
@@ -20,13 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class OrderServiceImpl implements OrderService {
-
-    @Override
-    public List<Order> getOrders() {
-        OrderDAO orderDAO = new OrderDAOImpl();
-        return orderDAO.getOrders();
-    }
+public class OrderWriteService implements OrderWrite {
 
     @Override
     public void checkout(String username, List<String> names, List<String> prices) {
@@ -61,34 +55,6 @@ public class OrderServiceImpl implements OrderService {
         }
 
         cartDAO.deleteByID(user.getId());
-    }
-
-    @Override
-    public List<Order> getUserOrders(String username) {
-        UserDAO userDAO = new UserDAOImpl();
-        OrderDAO orderDAO = new OrderDAOImpl();
-
-        User user = userDAO.findByUsername(username);
-        List<Order> orderList = new ArrayList<>();
-        if (user != null) {
-            orderList = orderDAO.getUserOrders(user.getId());
-        }
-
-        return orderList;
-    }
-
-    @Override
-    public List<Order> getUserDeliveredOrders(String username) {
-        UserDAO userDAO = new UserDAOImpl();
-        OrderDAO orderDAO = new OrderDAOImpl();
-
-        User user = userDAO.findByUsername(username);
-        List<Order> orderList = new ArrayList<>();
-        if (user != null) {
-            orderList = orderDAO.getUserDeliveredOrders(user.getId());
-        }
-
-        return orderList;
     }
 
     @Override

@@ -2,10 +2,10 @@ package presentation;
 
 import business.interfaces.read.CartRead;
 import business.interfaces.write.CartWrite;
+import business.interfaces.write.OrderWrite;
 import business.services.read.CartReadService;
 import business.services.write.CartWriteService;
-import business.services.OrderServiceImpl;
-import business.interfaces.OrderService;
+import business.services.write.OrderWriteService;
 import models.Deal;
 
 import javax.swing.*;
@@ -44,8 +44,8 @@ public class CartGUI extends JFrame {
                 }
             }
             if (names.size() != 0 && prices.size() != 0) {
-                OrderService orderService = new OrderServiceImpl();
-                orderService.checkout(username, names, prices);
+                OrderWrite orderWriteService = new OrderWriteService();
+                orderWriteService.checkout(username, names, prices);
                 displayTable(username);
             }
         });

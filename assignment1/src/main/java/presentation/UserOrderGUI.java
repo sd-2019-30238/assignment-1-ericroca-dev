@@ -1,7 +1,7 @@
 package presentation;
 
-import business.services.OrderServiceImpl;
-import business.interfaces.OrderService;
+import business.interfaces.read.OrderRead;
+import business.services.read.OrderReadService;
 import models.Order;
 
 import javax.swing.*;
@@ -62,9 +62,9 @@ public class UserOrderGUI extends JFrame {
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
-        OrderService orderService = new OrderServiceImpl();
+        OrderRead orderReadService = new OrderReadService();
 
-        List<Order> orderList = orderService.getUserOrders(username);
+        List<Order> orderList = orderReadService.getUserOrders(username);
         for (Order order : orderList) {
             Object[] row = {order.getDetails(), order.getStatus()};
             model.addRow(row);

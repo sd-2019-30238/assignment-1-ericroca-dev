@@ -1,9 +1,9 @@
 package presentation;
 
 import business.interfaces.read.LoginRead;
-import business.services.OrderServiceImpl;
-import business.interfaces.OrderService;
+import business.interfaces.read.OrderRead;
 import business.services.read.LoginReadService;
+import business.services.read.OrderReadService;
 import models.Order;
 import models.User;
 
@@ -81,9 +81,9 @@ public class UserOrderHistoryGUI extends JFrame {
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
-        OrderService orderService = new OrderServiceImpl();
+        OrderRead orderReadService = new OrderReadService();
 
-        orderList = orderService.getUserDeliveredOrders(username);
+        orderList = orderReadService.getUserDeliveredOrders(username);
         for (Order order : orderList) {
             Object[] row = {order.getDetails(), order.getStatus()};
             model.addRow(row);

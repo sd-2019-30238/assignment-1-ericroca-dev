@@ -1,7 +1,9 @@
 package controller;
 
-import business.services.OrderServiceImpl;
-import business.interfaces.OrderService;
+import business.interfaces.read.OrderRead;
+import business.interfaces.write.OrderWrite;
+import business.services.read.OrderReadService;
+import business.services.write.OrderWriteService;
 import models.CheckoutHolder;
 import models.Order;
 import org.springframework.http.HttpStatus;
@@ -15,35 +17,35 @@ public class OrderController {
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public List<Order> getOrders() {
-        OrderService orderService = new OrderServiceImpl();
-        return orderService.getOrders();
+        OrderRead orderReadService = new OrderReadService();
+        return orderReadService.getOrders();
     }
 
     @RequestMapping(value = "/checkout", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public void checkout(CheckoutHolder holder) {
-        OrderService orderService = new OrderServiceImpl();
-        orderService.checkout(holder.getUsername(), holder.getNames(), holder.getPrices());
+        OrderWrite orderWriteService = new OrderWriteService();
+        orderWriteService.checkout(holder.getUsername(), holder.getNames(), holder.getPrices());
     }
 
     @RequestMapping(value = "/{username}/order", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public List<Order> getUserOrders(@PathVariable("username") String username) {
-        OrderService orderService = new OrderServiceImpl();
-        return orderService.getUserOrders(username);
+        OrderRead orderReadService = new OrderReadService();
+        return orderReadService.getUserOrders(username);
     }
 
     @RequestMapping(value = "/{username}/delivered", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public List<Order> getUserDeliveredOrderes(@PathVariable("username") String username) {
-        OrderService orderService = new OrderServiceImpl();
-        return orderService.getUserDeliveredOrders(username);
+        OrderRead orderReadService = new OrderReadService();
+        return orderReadService.getUserDeliveredOrders(username);
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
     public void updateStatus(@RequestBody Order order) {
-        OrderService orderService = new OrderServiceImpl();
-        orderService.updateStatus(order.getId(), order.getStatus());
+        OrderWrite orderWriteService = new OrderWriteService();
+        orderWriteService.updateStatus(order.getId(), order.getStatus());
     }
 }

@@ -1,7 +1,9 @@
 package presentation;
 
-import business.services.OrderServiceImpl;
-import business.interfaces.OrderService;
+import business.interfaces.read.OrderRead;
+import business.interfaces.write.OrderWrite;
+import business.services.read.OrderReadService;
+import business.services.write.OrderWriteService;
 import models.Order;
 
 import javax.swing.*;
@@ -50,8 +52,8 @@ public class StaffOrderGUI extends JFrame {
 
             if (!idText.equals("") && !status.equals("")) {
                 Integer id = Integer.valueOf(idText);
-                OrderService orderService = new OrderServiceImpl();
-                orderService.updateStatus(id, status);
+                OrderWrite orderWriteService = new OrderWriteService();
+                orderWriteService.updateStatus(id, status);
                 displayTable();
             }
         });
@@ -111,9 +113,9 @@ public class StaffOrderGUI extends JFrame {
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
-        OrderService orderService = new OrderServiceImpl();
+        OrderRead orderReadService = new OrderReadService();
 
-        List<Order> orderList = orderService.getOrders();
+        List<Order> orderList = orderReadService.getOrders();
         for (Order order : orderList) {
             Object[] row = {order.getId(), order.getUserID(), order.getDetails(), order.getStatus()};
             model.addRow(row);
