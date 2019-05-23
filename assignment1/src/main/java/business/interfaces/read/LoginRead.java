@@ -1,10 +1,8 @@
-package business.interfaces;
+package business.interfaces.read;
 
 import models.User;
 
-public interface LoginService {
-
-    String createAccount(String username, String password);
+public interface LoginRead {
 
     String validateUser(String username, String password);
 

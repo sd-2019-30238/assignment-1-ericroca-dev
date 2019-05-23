@@ -1,9 +1,9 @@
 package presentation;
 
-import business.services.LoginServiceImpl;
+import business.interfaces.read.LoginRead;
 import business.services.OrderServiceImpl;
-import business.interfaces.LoginService;
 import business.interfaces.OrderService;
+import business.services.read.LoginReadService;
 import models.Order;
 import models.User;
 
@@ -64,8 +64,8 @@ public class UserOrderHistoryGUI extends JFrame {
                 if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
                     Order order = orderList.get(table.getSelectedRow());
 
-                    LoginService loginService = new LoginServiceImpl();
-                    User user = loginService.getUserByUsername(username);
+                    LoginRead loginReadService = new LoginReadService();
+                    User user = loginReadService.getUserByUsername(username);
 
                     new FeedbackGUI(order.getId(), user.getId());
                 }

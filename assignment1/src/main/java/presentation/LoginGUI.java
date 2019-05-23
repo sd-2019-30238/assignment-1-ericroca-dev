@@ -1,7 +1,9 @@
 package presentation;
 
-import business.services.LoginServiceImpl;
-import business.interfaces.LoginService;
+import business.interfaces.read.LoginRead;
+import business.interfaces.write.LoginWrite;
+import business.services.read.LoginReadService;
+import business.services.write.LoginWriteService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,8 +47,8 @@ public class LoginGUI extends JFrame {
         loginButton.addActionListener((e) -> {
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
-            LoginService loginService = new LoginServiceImpl();
-            String error = loginService.validateUser(username, password);
+            LoginRead loginReadService = new LoginReadService();
+            String error = loginReadService.validateUser(username, password);
             if (error.equals("Invalid username or password!")) {
                 errorLabel.setText(error);
             } else if (error.equals("user")){
@@ -62,8 +64,8 @@ public class LoginGUI extends JFrame {
         createAccountButton.addActionListener((e) -> {
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
-            LoginService loginService = new LoginServiceImpl();
-            String error = loginService.createAccount(username, password);
+            LoginWrite loginWriteService = new LoginWriteService();
+            String error = loginWriteService.createAccount(username, password);
             if (!error.equals("OK")) {
                 errorLabel.setText(error);
             } else {
