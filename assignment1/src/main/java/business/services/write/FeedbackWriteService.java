@@ -1,6 +1,6 @@
-package business.services;
+package business.services.write;
 
-import business.interfaces.FeedbackService;
+import business.interfaces.write.FeedbackWrite;
 import data.implementation.FeedbackDAOImpl;
 import data.service.FeedbackDAO;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class FeedbackServiceImpl implements FeedbackService {
+public class FeedbackWriteService implements FeedbackWrite {
 
     @Override
     public String submitFeedback(Integer orderId, Integer userId, String details) {

@@ -1,7 +1,7 @@
 package presentation;
 
-import business.services.FeedbackServiceImpl;
-import business.interfaces.FeedbackService;
+import business.services.write.FeedbackWriteService;
+import business.interfaces.write.FeedbackWrite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +37,8 @@ public class FeedbackGUI extends JFrame {
         submitButton.addActionListener((e) -> {
             String details = feedbackTextArea.getText();
             if (!details.equals("")) {
-                FeedbackService feedbackService = new FeedbackServiceImpl();
-                String error = feedbackService.submitFeedback(orderId, userId, details);
+                FeedbackWrite feedbackWriteService = new FeedbackWriteService();
+                String error = feedbackWriteService.submitFeedback(orderId, userId, details);
                 errorLabel.setText(error);
             }
         });
