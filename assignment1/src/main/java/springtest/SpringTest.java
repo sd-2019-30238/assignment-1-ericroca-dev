@@ -1,7 +1,7 @@
 package springtest;
 
-import business.implementation.LoginServiceImpl;
-import business.service.LoginService;
+import business.services.LoginServiceImpl;
+import business.interfaces.LoginService;
 import models.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,11 +1,11 @@
 package presentation;
 
-import business.implementation.CartServiceImpl;
-import business.implementation.DealServiceImpl;
-import business.implementation.OrderServiceImpl;
-import business.service.CartService;
-import business.service.DealService;
-import business.service.OrderService;
+import business.interfaces.CartRead;
+import business.interfaces.CartWrite;
+import business.services.CartReadService;
+import business.services.CartWriteService;
+import business.services.OrderServiceImpl;
+import business.interfaces.OrderService;
 import models.Deal;
 
 import javax.swing.*;
@@ -68,9 +68,9 @@ public class CartGUI extends JFrame {
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
-                    CartService cartService = new CartServiceImpl();
+                    CartWrite cartWriteService = new CartWriteService();
                     String name = table.getValueAt(table.getSelectedRow(), 1).toString();
-                    cartService.deleteItem(username, name);
+                    cartWriteService.deleteItem(username, name);
                     displayTable(username);
                 }
             }
@@ -86,9 +86,9 @@ public class CartGUI extends JFrame {
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
-        CartService cartService = new CartServiceImpl();
+        CartRead cartReadService = new CartReadService();
 
-        List<Deal> dealList = cartService.getUserCart(username);
+        List<Deal> dealList = cartReadService.getUserCart(username);
         for (Deal deal : dealList) {
             Object[] row = {deal.getPrice(), deal.getName(), deal.getType()};
             model.addRow(row);

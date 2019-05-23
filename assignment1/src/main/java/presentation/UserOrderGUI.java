@@ -1,7 +1,7 @@
 package presentation;
 
-import business.implementation.OrderServiceImpl;
-import business.service.OrderService;
+import business.services.OrderServiceImpl;
+import business.interfaces.OrderService;
 import models.Order;
 
 import javax.swing.*;

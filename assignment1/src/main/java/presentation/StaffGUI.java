@@ -1,7 +1,7 @@
 package presentation;
 
-import business.implementation.DealServiceImpl;
-import business.service.DealService;
+import business.services.DealServiceImpl;
+import business.interfaces.DealService;
 import models.Deal;
 import models.Discount;
 import models.DiscountFactory;

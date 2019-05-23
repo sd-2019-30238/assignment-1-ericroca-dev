@@ -1,9 +1,9 @@
 package presentation;
 
-import business.implementation.LoginServiceImpl;
-import business.implementation.OrderServiceImpl;
-import business.service.LoginService;
-import business.service.OrderService;
+import business.services.LoginServiceImpl;
+import business.services.OrderServiceImpl;
+import business.interfaces.LoginService;
+import business.interfaces.OrderService;
 import models.Order;
 import models.User;
 

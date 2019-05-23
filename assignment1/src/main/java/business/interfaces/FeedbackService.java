@@ -1,4 +1,4 @@
-package business.service;
+package business.interfaces;
 
 public interface FeedbackService {
 

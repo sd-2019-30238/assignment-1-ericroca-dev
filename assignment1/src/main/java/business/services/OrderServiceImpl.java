@@ -1,6 +1,6 @@
-package business.implementation;
+package business.services;
 
-import business.service.OrderService;
+import business.interfaces.OrderService;
 import data.implementation.CartDAOImpl;
 import data.implementation.DealDAOImpl;
 import data.implementation.OrderDAOImpl;

@@ -1,6 +1,6 @@
-package business.implementation;
+package business.services;
 
-import business.service.LoginService;
+import business.interfaces.LoginService;
 import data.implementation.UserDAOImpl;
 import data.service.UserDAO;
 import models.User;

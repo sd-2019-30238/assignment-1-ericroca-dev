@@ -1,7 +1,7 @@
 package presentation;
 
-import business.implementation.LoginServiceImpl;
-import business.service.LoginService;
+import business.services.LoginServiceImpl;
+import business.interfaces.LoginService;
 
 import javax.swing.*;
 import java.awt.*;

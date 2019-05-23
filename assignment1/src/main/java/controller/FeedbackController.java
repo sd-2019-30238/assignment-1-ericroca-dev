@@ -1,7 +1,7 @@
 package controller;
 
-import business.implementation.FeedbackServiceImpl;
-import business.service.FeedbackService;
+import business.services.FeedbackServiceImpl;
+import business.interfaces.FeedbackService;
 import models.Feedback;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

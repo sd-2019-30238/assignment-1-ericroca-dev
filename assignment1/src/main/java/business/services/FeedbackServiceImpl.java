@@ -1,6 +1,6 @@
-package business.implementation;
+package business.services;
 
-import business.service.FeedbackService;
+import business.interfaces.FeedbackService;
 import data.implementation.FeedbackDAOImpl;
 import data.service.FeedbackDAO;
 import org.springframework.stereotype.Service;

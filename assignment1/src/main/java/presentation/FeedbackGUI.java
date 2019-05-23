@@ -1,7 +1,7 @@
 package presentation;
 
-import business.implementation.FeedbackServiceImpl;
-import business.service.FeedbackService;
+import business.services.FeedbackServiceImpl;
+import business.interfaces.FeedbackService;
 
 import javax.swing.*;
 import java.awt.*;

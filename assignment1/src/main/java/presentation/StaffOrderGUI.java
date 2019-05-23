@@ -1,13 +1,10 @@
 package presentation;
 
-import business.implementation.OrderServiceImpl;
-import business.service.OrderService;
+import business.services.OrderServiceImpl;
+import business.interfaces.OrderService;
 import models.Order;
-import models.User;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;

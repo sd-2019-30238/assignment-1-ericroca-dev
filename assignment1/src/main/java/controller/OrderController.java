@@ -1,7 +1,7 @@
 package controller;
 
-import business.implementation.OrderServiceImpl;
-import business.service.OrderService;
+import business.services.OrderServiceImpl;
+import business.interfaces.OrderService;
 import models.CheckoutHolder;
 import models.Order;
 import org.springframework.http.HttpStatus;

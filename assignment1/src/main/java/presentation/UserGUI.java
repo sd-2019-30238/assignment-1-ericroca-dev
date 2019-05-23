@@ -1,9 +1,9 @@
 package presentation;
 
-import business.implementation.CartServiceImpl;
-import business.implementation.DealServiceImpl;
-import business.service.CartService;
-import business.service.DealService;
+import business.interfaces.CartWrite;
+import business.services.CartWriteService;
+import business.services.DealServiceImpl;
+import business.interfaces.DealService;
 import models.Deal;
 
 import javax.swing.*;
@@ -136,9 +136,9 @@ public class UserGUI extends JFrame {
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1) {
-                    CartService cartService = new CartServiceImpl();
+                    CartWrite cartWriteService = new CartWriteService();
                     String name = table.getValueAt(table.getSelectedRow(), 1).toString();
-                    cartService.addToCart(username, name);
+                    cartWriteService.addToCart(username, name);
                 }
             }
         });

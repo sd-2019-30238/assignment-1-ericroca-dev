@@ -1,7 +1,7 @@
 package controller;
 
-import business.implementation.LoginServiceImpl;
-import business.service.LoginService;
+import business.services.LoginServiceImpl;
+import business.interfaces.LoginService;
 import models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
