@@ -1,6 +1,6 @@
-package business.services;
+package business.services.write;
 
-import business.interfaces.CartWrite;
+import business.interfaces.write.CartWrite;
 import data.implementation.CartDAOImpl;
 import data.implementation.DealDAOImpl;
 import data.implementation.UserDAOImpl;

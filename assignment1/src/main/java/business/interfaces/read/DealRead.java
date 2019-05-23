@@ -1,11 +1,10 @@
-package business.interfaces;
+package business.interfaces.read;
 
 import models.Deal;
-import models.Discount;
 
 import java.util.List;
 
-public interface DealService {
+public interface DealRead {
 
     List<Deal> getDeals();
 
@@ -22,13 +21,4 @@ public interface DealService {
     List<Deal> getFilteredDealsByNameAndType(String name, String type);
 
     List<Deal> getFilteredDeals(Double price, String name, String type);
-
-    void addDeal(Double price, String name, String type, Integer quantity);
-
-    void editDeal(Integer id, Double price, String name, String type, Integer quantity);
-
-    void deleteDeal(Integer id);
-
-    void applyDiscount(Integer id, Discount discount);
-
 }

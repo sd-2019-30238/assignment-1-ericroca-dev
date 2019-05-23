@@ -1,6 +1,6 @@
-package business.services;
+package business.services.read;
 
-import business.interfaces.CartRead;
+import business.interfaces.read.CartRead;
 import data.implementation.CartDAOImpl;
 import data.implementation.DealDAOImpl;
 import data.implementation.UserDAOImpl;

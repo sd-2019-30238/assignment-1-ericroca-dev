@@ -1,9 +1,9 @@
 package controller;
 
-import business.interfaces.CartRead;
-import business.interfaces.CartWrite;
-import business.services.CartReadService;
-import business.services.CartWriteService;
+import business.interfaces.read.CartRead;
+import business.interfaces.write.CartWrite;
+import business.services.read.CartReadService;
+import business.services.write.CartWriteService;
 import models.Deal;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

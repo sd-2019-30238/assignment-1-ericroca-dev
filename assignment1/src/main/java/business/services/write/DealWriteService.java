@@ -1,66 +1,17 @@
-package business.services;
+package business.services.write;
 
-import business.interfaces.DealService;
+import business.interfaces.write.DealWrite;
 import data.implementation.DealDAOImpl;
 import data.service.DealDAO;
 import models.Deal;
 import models.Discount;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class DealServiceImpl implements DealService {
-
-    @Override
-    public List<Deal> getDeals() {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDeals();
-    }
-
-    @Override
-    public List<Deal> getFilteredDealsByPrice(Double price) {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDealsByPrice(price);
-    }
-
-    @Override
-    public List<Deal> getFilteredDealsByName(String name) {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDealsByName(name);
-    }
-
-    @Override
-    public List<Deal> getFilteredDealsByType(String type) {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDealsByType(type);
-    }
-
-    @Override
-    public List<Deal> getFilteredDealsByPriceAndName(Double price, String name) {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDealsByPriceAndName(price, name);
-    }
-
-    @Override
-    public List<Deal> getFilteredDealsByPriceAndType(Double price, String type) {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDealsByPriceAndType(price, type);
-    }
-
-    @Override
-    public List<Deal> getFilteredDealsByNameAndType(String name, String type) {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDealsByNameAndType(name, type);
-    }
-
-    @Override
-    public List<Deal> getFilteredDeals(Double price, String name, String type) {
-        DealDAO dealDAO = new DealDAOImpl();
-        return dealDAO.getDealsByAll(price, name, type);
-    }
+public class DealWriteService implements DealWrite {
 
     @Override
     public void addDeal(Double price, String name, String type, Integer quantity) {

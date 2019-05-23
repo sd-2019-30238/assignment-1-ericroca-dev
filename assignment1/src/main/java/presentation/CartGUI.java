@@ -1,9 +1,9 @@
 package presentation;
 
-import business.interfaces.CartRead;
-import business.interfaces.CartWrite;
-import business.services.CartReadService;
-import business.services.CartWriteService;
+import business.interfaces.read.CartRead;
+import business.interfaces.write.CartWrite;
+import business.services.read.CartReadService;
+import business.services.write.CartWriteService;
 import business.services.OrderServiceImpl;
 import business.interfaces.OrderService;
 import models.Deal;

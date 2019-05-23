@@ -1,7 +1,9 @@
 package presentation;
 
-import business.services.DealServiceImpl;
-import business.interfaces.DealService;
+import business.interfaces.read.DealRead;
+import business.interfaces.write.DealWrite;
+import business.services.read.DealReadService;
+import business.services.write.DealWriteService;
 import models.Deal;
 import models.Discount;
 import models.DiscountFactory;
@@ -78,35 +80,35 @@ public class StaffGUI extends JFrame {
 
             if (!priceText.equals("") && !name.equals("") && !type.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDeals(price, name, type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDeals(price, name, type);
                 displayTable(dealList);
             } else if (!priceText.equals("") && !name.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPriceAndName(price, name);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByPriceAndName(price, name);
                 displayTable(dealList);
             } else if (!priceText.equals("") && !type.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPriceAndType(price, type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByPriceAndType(price, type);
                 displayTable(dealList);
             } else if (!name.equals("") && !type.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByNameAndType(name, type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByNameAndType(name, type);
                 displayTable(dealList);
             } else if (!priceText.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPrice(price);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByPrice(price);
                 displayTable(dealList);
             } else if (!name.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByName(name);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByName(name);
                 displayTable(dealList);
             } else if (!type.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByType(type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByType(type);
                 displayTable(dealList);
             } else {
                 displayTable();
@@ -126,8 +128,8 @@ public class StaffGUI extends JFrame {
                     !quantityText.equals("")) {
                 Double price = Double.valueOf(priceText);
                 Integer quantity = Integer.valueOf(quantityText);
-                DealService dealService = new DealServiceImpl();
-                dealService.addDeal(price, name, type, quantity);
+                DealWrite dealWriteService = new DealWriteService();
+                dealWriteService.addDeal(price, name, type, quantity);
                 displayTable();
             }
         });
@@ -147,8 +149,8 @@ public class StaffGUI extends JFrame {
                 Integer id = Integer.valueOf(idText);
                 Double price = Double.valueOf(priceText);
                 Integer quantity = Integer.valueOf(quantityText);
-                DealService dealService = new DealServiceImpl();
-                dealService.editDeal(id, price, name, type, quantity);
+                DealWrite dealWriteService = new DealWriteService();
+                dealWriteService.editDeal(id, price, name, type, quantity);
                 displayTable();
             }
         });
@@ -161,8 +163,8 @@ public class StaffGUI extends JFrame {
 
             if (!idText.equals("")) {
                 Integer id = Integer.valueOf(idText);
-                DealService dealService = new DealServiceImpl();
-                dealService.deleteDeal(id);
+                DealWrite dealWriteService = new DealWriteService();
+                dealWriteService.deleteDeal(id);
                 displayTable();
             }
         });
@@ -186,8 +188,8 @@ public class StaffGUI extends JFrame {
                 DiscountFactory discountFactory = new DiscountFactory();
                 Discount halfOffDiscount = discountFactory.getDiscount("HALFOFF");
 
-                DealService dealService = new DealServiceImpl();
-                dealService.applyDiscount(id, halfOffDiscount);
+                DealWrite dealWriteService = new DealWriteService();
+                dealWriteService.applyDiscount(id, halfOffDiscount);
                 displayTable();
             }
         });
@@ -231,9 +233,9 @@ public class StaffGUI extends JFrame {
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
-        DealService dealService = new DealServiceImpl();
+        DealRead dealReadService = new DealReadService();
 
-        List<Deal> dealList = dealService.getDeals();
+        List<Deal> dealList = dealReadService.getDeals();
         for (Deal deal : dealList) {
             Object[] row = {deal.getId(), deal.getPrice(), deal.getName(), deal.getType(), deal.getQuantity()};
             model.addRow(row);

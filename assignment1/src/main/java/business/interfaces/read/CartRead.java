@@ -1,4 +1,4 @@
-package business.interfaces;
+package business.interfaces.read;
 
 import models.Deal;
 

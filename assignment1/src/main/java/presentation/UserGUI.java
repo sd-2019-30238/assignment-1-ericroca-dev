@@ -1,9 +1,9 @@
 package presentation;
 
-import business.interfaces.CartWrite;
-import business.services.CartWriteService;
-import business.services.DealServiceImpl;
-import business.interfaces.DealService;
+import business.interfaces.write.CartWrite;
+import business.interfaces.read.DealRead;
+import business.services.write.CartWriteService;
+import business.services.read.DealReadService;
 import models.Deal;
 
 import javax.swing.*;
@@ -62,35 +62,35 @@ public class UserGUI extends JFrame {
 
             if (!priceText.equals("") && !name.equals("") && !type.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDeals(price, name, type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDeals(price, name, type);
                 displayTable(dealList);
             } else if (!priceText.equals("") && !name.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPriceAndName(price, name);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByPriceAndName(price, name);
                 displayTable(dealList);
             } else if (!priceText.equals("") && !type.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPriceAndType(price, type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByPriceAndType(price, type);
                 displayTable(dealList);
             } else if (!name.equals("") && !type.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByNameAndType(name, type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByNameAndType(name, type);
                 displayTable(dealList);
             } else if (!priceText.equals("")) {
                 Double price = Double.valueOf(priceText);
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByPrice(price);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByPrice(price);
                 displayTable(dealList);
             } else if (!name.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByName(name);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByName(name);
                 displayTable(dealList);
             } else if (!type.equals("")) {
-                DealService dealService = new DealServiceImpl();
-                List<Deal> dealList = dealService.getFilteredDealsByType(type);
+                DealRead dealReadService = new DealReadService();
+                List<Deal> dealList = dealReadService.getFilteredDealsByType(type);
                 displayTable(dealList);
             } else {
                 displayTable();
@@ -162,9 +162,9 @@ public class UserGUI extends JFrame {
         model = new DefaultTableModel(columns, 0);
         table.setModel(model);
 
-        DealService dealService = new DealServiceImpl();
+        DealRead dealReadService = new DealReadService();
 
-        List<Deal> dealList = dealService.getDeals();
+        List<Deal> dealList = dealReadService.getDeals();
         for (Deal deal : dealList) {
             Object[] row = {deal.getPrice(), deal.getName(), deal.getType()};
             model.addRow(row);
