@@ -9,9 +9,7 @@ import data.service.CartDAO;
 import data.service.DealDAO;
 import data.service.OrderDAO;
 import data.service.UserDAO;
-import models.Deal;
-import models.Order;
-import models.User;
+import models.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,16 +36,20 @@ public class OrderWriteService implements OrderWrite {
             }
         }
 
-        for (Deal deal : dealList) {
-            dealDAO.updateDeal(deal.getId(), deal.getPrice(), deal.getName(), deal.getType(),
-                    deal.getQuantity() - 1);
+        for (int i = 0; i < dealList.size(); ++i) {
+            dealDAO.updateDeal(dealList.get(i).getId(), dealList.get(i).getPrice(), dealList.get(i).getName(),
+                    dealList.get(i).getType(), dealList.get(i).getQuantity() - 1);
+
+            ConcreteDiscountDecorator concreteDiscountDecorator = new ConcreteDiscountDecorator(new HalfOffDiscount(),
+                    DiscountType.HALFOFF);
+            concreteDiscountDecorator.applyDiscount(dealList.get(i));
         }
 
         User user = userDAO.findByUsername(username);
 
         String details = "";
         for (int i = 0; i < names.size(); ++i) {
-            details += "Name: " + names.get(i) + ", Price: " + prices.get(i) + "; ";
+            details += "Name: " + names.get(i) + ", Price: " + dealList.get(i).getPrice() + "; ";
         }
 
         if (user != null) {
