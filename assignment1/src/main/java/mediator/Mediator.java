@@ -3,6 +3,7 @@ package mediator;
 import models.Deal;
 import models.Discount;
 import models.Order;
+import models.User;
 
 import java.util.List;
 
@@ -49,4 +50,10 @@ public interface Mediator {
     void checkout(String username, List<String> names);
 
     void updateStatus(Integer id, String status);
+
+    String validateUser(String username, String password);
+
+    User getUserByUsername(String username);
+
+    String createAccount(String username, String password);
 }

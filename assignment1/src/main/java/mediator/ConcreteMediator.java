@@ -4,6 +4,7 @@ import mediator.handlers.*;
 import models.Deal;
 import models.Discount;
 import models.Order;
+import models.User;
 
 import java.util.List;
 
@@ -171,5 +172,28 @@ public class ConcreteMediator implements Mediator {
         ((OrderHandler) handler).setStatus(status);
         ((OrderHandler) handler).setId(id);
         handler.handle(Request.UPDATESTATUS);
+    }
+
+    @Override
+    public String validateUser(String username, String password) {
+        Handler handler = new LoginHandler();
+        ((LoginHandler) handler).setUsername(username);
+        ((LoginHandler) handler).setPassword(password);
+        return handler.handle(Request.VALIDATEUSER);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        Handler handler = new LoginHandler();
+        ((LoginHandler) handler).setUsername(username);
+        return handler.handle(Request.GETUSER);
+    }
+
+    @Override
+    public String createAccount(String username, String password) {
+        Handler handler = new LoginHandler();
+        ((LoginHandler) handler).setUsername(username);
+        ((LoginHandler) handler).setPassword(password);
+        return handler.handle(Request.CREATEACCOUNT);
     }
 }
