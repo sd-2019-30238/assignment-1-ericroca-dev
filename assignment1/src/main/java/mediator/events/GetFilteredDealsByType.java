@@ -4,11 +4,12 @@ import data.implementation.DealDAOImpl;
 import data.service.DealDAO;
 import models.Deal;
 
-public class FindDeal {
+import java.util.List;
 
-    public Deal findDeal(String name) {
+public class GetFilteredDealsByType {
+
+    public List<Deal> getFilteredDealsByType(String type) {
         DealDAO dealDAO = new DealDAOImpl();
-        Deal deal = dealDAO.findByName(name);
-        return deal;
+        return dealDAO.getDealsByType(type);
     }
 }

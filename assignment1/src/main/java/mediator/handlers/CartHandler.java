@@ -21,19 +21,19 @@ public class CartHandler implements Handler{
     }
 
     @Override
-    public <T> T handle(Query query) {
-        if (query == Query.GETUSERCART) {
+    public <T> T handle(Request request) {
+        if (request == Request.GETUSERCART) {
             User user = new FindUser().findUser(username);
             List<Cart> cartList = new FindUserCart().findUserCart(user);
             List<Deal> dealList = new FindUserDeals().findUserDeals(cartList);
             return (T) dealList;
-        } else if (query == Query.ADDTOCART) {
+        } else if (request == Request.ADDTOCART) {
             User user = new FindUser().findUser(username);
-            Deal deal = new FindDeal().findDeal(name);
+            Deal deal = new FindDealByName().findDealByName(name);
             new AddToCart().addToCart(user, deal);
-        } else if (query == Query.DELETEITEM) {
+        } else if (request == Request.DELETEITEM) {
             User user = new FindUser().findUser(username);
-            Deal deal = new FindDeal().findDeal(name);
+            Deal deal = new FindDealByName().findDealByName(name);
             Cart cart = new FindCart().findCart(user, deal);
             new DeleteCart().deleteCart(cart);
         }
