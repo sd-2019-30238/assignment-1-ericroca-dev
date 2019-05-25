@@ -33,19 +33,16 @@ public class CartGUI extends JFrame {
         checkoutButton.setBounds(260, 40, 120, 30);
         checkoutButton.addActionListener((e) -> {
             List<String> names = new ArrayList<>();
-            List<String> prices = new ArrayList<>();
             for (int row = 0; row < model.getRowCount(); row++){
                 for (int column = 0; column < model.getColumnCount() - 1; column++){
-                    if (column == 0) {
-                        prices.add(model.getValueAt(row, column).toString());
-                    } else if (column == 1) {
+                    if (column == 1) {
                         names.add(model.getValueAt(row, column).toString());
                     }
                 }
             }
-            if (names.size() != 0 && prices.size() != 0) {
+            if (names.size() != 0) {
                 OrderWrite orderWriteService = new OrderWriteService();
-                orderWriteService.checkout(username, names, prices);
+                orderWriteService.checkout(username, names);
                 displayTable(username);
             }
         });

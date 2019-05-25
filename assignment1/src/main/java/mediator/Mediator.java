@@ -2,6 +2,7 @@ package mediator;
 
 import models.Deal;
 import models.Discount;
+import models.Order;
 
 import java.util.List;
 
@@ -38,4 +39,14 @@ public interface Mediator {
     void applyDiscount(Integer id, Discount discount);
 
     String submitFeedback(Integer orderId, Integer userId, String details);
+
+    List<Order> getOrders();
+
+    List<Order> getUserOrders(String username);
+
+    List<Order> getUserDeliveredOrders(String username);
+
+    void checkout(String username, List<String> names);
+
+    void updateStatus(Integer id, String status);
 }

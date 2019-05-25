@@ -5,6 +5,8 @@ import data.implementation.OrderDAOImpl;
 import data.implementation.UserDAOImpl;
 import data.service.OrderDAO;
 import data.service.UserDAO;
+import mediator.ConcreteMediator;
+import mediator.Mediator;
 import models.Order;
 import models.User;
 import org.springframework.stereotype.Service;
@@ -15,37 +17,24 @@ import java.util.List;
 @Service
 public class OrderReadService implements OrderRead {
 
+    private Mediator mediator;
+
+    public OrderReadService() {
+        mediator = new ConcreteMediator();
+    }
+
     @Override
     public List<Order> getOrders() {
-        OrderDAO orderDAO = new OrderDAOImpl();
-        return orderDAO.getOrders();
+        return mediator.getOrders();
     }
 
     @Override
     public List<Order> getUserOrders(String username) {
-        UserDAO userDAO = new UserDAOImpl();
-        OrderDAO orderDAO = new OrderDAOImpl();
-
-        User user = userDAO.findByUsername(username);
-        List<Order> orderList = new ArrayList<>();
-        if (user != null) {
-            orderList = orderDAO.getUserOrders(user.getId());
-        }
-
-        return orderList;
+        return mediator.getUserOrders(username);
     }
 
     @Override
     public List<Order> getUserDeliveredOrders(String username) {
-        UserDAO userDAO = new UserDAOImpl();
-        OrderDAO orderDAO = new OrderDAOImpl();
-
-        User user = userDAO.findByUsername(username);
-        List<Order> orderList = new ArrayList<>();
-        if (user != null) {
-            orderList = orderDAO.getUserDeliveredOrders(user.getId());
-        }
-
-        return orderList;
+        return mediator.getUserDeliveredOrders(username);
     }
 }

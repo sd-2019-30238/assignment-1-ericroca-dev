@@ -25,7 +25,7 @@ public class OrderController {
     @ResponseStatus(value = HttpStatus.OK)
     public void checkout(CheckoutHolder holder) {
         OrderWrite orderWriteService = new OrderWriteService();
-        orderWriteService.checkout(holder.getUsername(), holder.getNames(), holder.getPrices());
+        orderWriteService.checkout(holder.getUsername(), holder.getNames());
     }
 
     @RequestMapping(value = "/{username}/order", method = RequestMethod.GET)

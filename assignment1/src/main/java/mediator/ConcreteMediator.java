@@ -3,6 +3,7 @@ package mediator;
 import mediator.handlers.*;
 import models.Deal;
 import models.Discount;
+import models.Order;
 
 import java.util.List;
 
@@ -127,11 +128,48 @@ public class ConcreteMediator implements Mediator {
         handler.handle(Request.APPLYDISCOUNT);
     }
 
+    @Override
     public String submitFeedback(Integer orderId, Integer userId, String details) {
         Handler handler = new FeedbackHandler();
         ((FeedbackHandler) handler).setOrderId(orderId);
         ((FeedbackHandler) handler).setUserId(userId);
         ((FeedbackHandler) handler).setDetails(details);
         return handler.handle(Request.ADDFEEDBACK);
+    }
+
+    @Override
+    public List<Order> getOrders() {
+        Handler handler = new OrderHandler();
+        return handler.handle(Request.GETORDERS);
+    }
+
+    @Override
+    public List<Order> getUserOrders(String username) {
+        Handler handler = new OrderHandler();
+        ((OrderHandler) handler).setUsername(username);
+        return handler.handle(Request.GETUSERORDERS);
+    }
+
+    @Override
+    public List<Order> getUserDeliveredOrders(String username) {
+        Handler handler = new OrderHandler();
+        ((OrderHandler) handler).setUsername(username);
+        return handler.handle(Request.GETUSERDELIVEREDORDERS);
+    }
+
+    @Override
+    public void checkout(String username, List<String> names) {
+        Handler handler = new OrderHandler();
+        ((OrderHandler) handler).setUsername(username);
+        ((OrderHandler) handler).setNames(names);
+        handler.handle(Request.CHECKOUT);
+    }
+
+    @Override
+    public void updateStatus(Integer id, String status) {
+        Handler handler = new OrderHandler();
+        ((OrderHandler) handler).setStatus(status);
+        ((OrderHandler) handler).setId(id);
+        handler.handle(Request.UPDATESTATUS);
     }
 }
