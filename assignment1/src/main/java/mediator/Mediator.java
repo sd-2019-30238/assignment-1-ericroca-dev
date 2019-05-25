@@ -36,4 +36,6 @@ public interface Mediator {
     void deleteDeal(Integer id);
 
     void applyDiscount(Integer id, Discount discount);
+
+    String submitFeedback(Integer orderId, Integer userId, String details);
 }

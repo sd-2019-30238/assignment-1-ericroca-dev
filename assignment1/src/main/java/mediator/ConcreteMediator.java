@@ -1,9 +1,6 @@
 package mediator;
 
-import mediator.handlers.CartHandler;
-import mediator.handlers.DealHandler;
-import mediator.handlers.Handler;
-import mediator.handlers.Request;
+import mediator.handlers.*;
 import models.Deal;
 import models.Discount;
 
@@ -128,5 +125,13 @@ public class ConcreteMediator implements Mediator {
         ((DealHandler) handler).setId(id);
         ((DealHandler) handler).setDiscount(discount);
         handler.handle(Request.APPLYDISCOUNT);
+    }
+
+    public String submitFeedback(Integer orderId, Integer userId, String details) {
+        Handler handler = new FeedbackHandler();
+        ((FeedbackHandler) handler).setOrderId(orderId);
+        ((FeedbackHandler) handler).setUserId(userId);
+        ((FeedbackHandler) handler).setDetails(details);
+        return handler.handle(Request.ADDFEEDBACK);
     }
 }

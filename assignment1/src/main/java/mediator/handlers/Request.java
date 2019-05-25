@@ -15,5 +15,6 @@ public enum Request {
     ADDDEAL,
     EDITDEAL,
     DELETEDEAL,
-    APPLYDISCOUNT
+    APPLYDISCOUNT,
+    ADDFEEDBACK
 }
